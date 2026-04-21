@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Findly - Ressources créatives pour monteurs</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #080810; color: #fff; min-height: 100vh; background-image: radial-gradient(ellipse at 20% 20%, rgba(108,99,255,0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(255,101,132,0.1) 0%, transparent 50%); }
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; background: rgba(8,8,16,0.8); }
+    .nav-logo { font-size: 22px; font-weight: 800; background: linear-gradient(135deg, #6c63ff, #ff6584); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nav-links { display: flex; gap: 20px; align-items: center; }
+    .nav-links a { color: #888; text-decoration: none; font-size: 14px; transition: color 0.2s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-btn { padding: 8px 20px; border-radius: 50px; border: 1px solid rgba(108,99,255,0.5); background: transparent; color: #fff; font-size: 14px; cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif; }
+    .nav-btn:hover { background: #6c63ff; border-color: #6c63ff; }
+    .nav-btn.premium { background: linear-gradient(135deg, #6c63ff, #ff6584); border: none; }
+    .hero { text-align: center; padding: 80px 20px 50px; }
+    .hero-badge { display: inline-block; padding: 6px 16px; border-radius: 50px; background: rgba(108,99,255,0.15); border: 1px solid rgba(108,99,255,0.3); color: #a09af0; font-size: 13px; margin-bottom: 24px; }
+    .hero h1 { font-size: 64px; font-weight: 800; line-height: 1.1; margin-bottom: 20px; background: linear-gradient(135deg, #fff 0%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero h1 span { background: linear-gradient(135deg, #6c63ff, #ff6584); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { color: #666; font-size: 18px; max-width: 500px; margin: 0 auto 40px; line-height: 1.6; }
+    .search-container { max-width: 700px; margin: 0 auto 20px; padding: 0 20px; }
+    .search-wrapper { display: flex; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 6px 6px 6px 20px; transition: border-color 0.2s; }
+    .search-wrapper:focus-within { border-color: #6c63ff; }
+    .search-wrapper input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 16px; font-family: 'Inter', sans-serif; padding: 10px 0; }
+    .search-wrapper input::placeholder { color: #444; }
+    .search-wrapper button { padding: 12px 24px; border-radius: 10px; border: none; background: linear-gradient(135deg, #6c63ff, #ff6584); color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity 0.2s; }
+    .search-wrapper button:hover { opacity: 0.9; }
+    .categories-title { text-align: center; color: #444; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin: 50px 0 24px; }
+    .categories-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; max-width: 1100px; margin: 0 auto 30px; padding: 0 20px; }
+    .cat-card { position: relative; border-radius: 20px; padding: 25px 15px; cursor: pointer; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); transition: all 0.3s; text-align: center; }
+    .cat-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.15); }
+    .cat-card.locked::after { content: '🔒'; position: absolute; top: 10px; right: 12px; font-size: 14px; }
+    .cat-card.gaming { background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(0,212,255,0.05)); border-color: rgba(0,212,255,0.2); }
+    .cat-card.gaming:hover { box-shadow: 0 20px 40px rgba(0,212,255,0.15); }
+    .cat-card.nature { background: linear-gradient(135deg, rgba(0,255,136,0.1), rgba(0,255,136,0.05)); border-color: rgba(0,255,136,0.2); }
+    .cat-card.nature:hover { box-shadow: 0 20px 40px rgba(0,255,136,0.15); }
+    .cat-card.cinema { background: linear-gradient(135deg, rgba(255,200,0,0.1), rgba(255,200,0,0.05)); border-color: rgba(255,200,0,0.2); }
+    .cat-card.cinema:hover { box-shadow: 0 20px 40px rgba(255,200,0,0.15); }
+    .cat-card.horror { background: linear-gradient(135deg, rgba(180,0,255,0.1), rgba(180,0,255,0.05)); border-color: rgba(180,0,255,0.2); }
+    .cat-card.horror:hover { box-shadow: 0 20px 40px rgba(180,0,255,0.15); }
+    .cat-card.urbain { background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)); border-color: rgba(255,255,255,0.1); }
+    .cat-card.urbain:hover { box-shadow: 0 20px 40px rgba(255,255,255,0.08); }
+    .cat-card.scifi { background: linear-gradient(135deg, rgba(0,150,255,0.1), rgba(0,150,255,0.05)); border-color: rgba(0,150,255,0.2); }
+    .cat-card.scifi:hover { box-shadow: 0 20px 40px rgba(0,150,255,0.15); }
+    .cat-card.action { background: linear-gradient(135deg, rgba(255,60,0,0.1), rgba(255,60,0,0.05)); border-color: rgba(255,60,0,0.2); }
+    .cat-card.action:hover { box-shadow: 0 20px 40px rgba(255,60,0,0.15); }
+    .cat-card.comedie { background: linear-gradient(135deg, rgba(255,200,50,0.1), rgba(255,200,50,0.05)); border-color: rgba(255,200,50,0.2); }
+    .cat-card.comedie:hover { box-shadow: 0 20px 40px rgba(255,200,50,0.15); }
+    .cat-card.sfx { background: linear-gradient(135deg, rgba(255,100,200,0.1), rgba(255,100,200,0.05)); border-color: rgba(255,100,200,0.2); }
+    .cat-card.sfx:hover { box-shadow: 0 20px 40px rgba(255,100,200,0.15); }
+    .cat-icon { font-size: 36px; margin-bottom: 10px; display: block; }
+    .cat-name { font-size: 14px; font-weight: 600; color: #fff; display: block; }
+    .cat-desc { font-size: 11px; color: #666; margin-top: 4px; display: block; }
+    .sfx-panel { display: none; max-width: 1100px; margin: 0 auto 40px; padding: 0 20px; }
+    .sfx-panel.show { display: block; }
+    .sfx-title { font-size: 16px; font-weight: 600; color: #ddd; margin-bottom: 16px; }
+    .sfx-types { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+    .sfx-type-btn { padding: 8px 18px; border-radius: 50px; border: 1px solid rgba(255,100,200,0.3); background: rgba(255,100,200,0.05); color: #ccc; font-size: 13px; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s; }
+    .sfx-type-btn:hover, .sfx-type-btn.active { background: rgba(255,100,200,0.2); border-color: rgba(255,100,200,0.6); color: #fff; }
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 1000; align-items: center; justify-content: center; }
+    .overlay.show { display: flex; }
+    .popup { background: #0f0f1a; border: 1px solid rgba(108,99,255,0.3); border-radius: 24px; padding: 40px; max-width: 480px; width: 90%; text-align: center; max-height: 90vh; overflow-y: auto; }
+    .popup h2 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+    .popup p { color: #666; font-size: 15px; margin-bottom: 24px; line-height: 1.6; }
+    .popup-price { font-size: 48px; font-weight: 800; background: linear-gradient(135deg, #6c63ff, #ff6584); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+    .popup-price-sub { color: #444; font-size: 13px; margin-bottom: 30px; }
+    .popup-features { text-align: left; margin-bottom: 24px; }
+    .popup-features li { list-style: none; padding: 8px 0; color: #aaa; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .popup-features li::before { content: '✓ '; color: #6c63ff; font-weight: 700; }
+    .email-input { width: 100%; padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-family: 'Inter', sans-serif; font-size: 14px; margin-bottom: 12px; outline: none; }
+    .paypal-btn { display: block; width: 100%; padding: 16px; border-radius: 12px; border: none; background: #0070ba; color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; margin-bottom: 12px; transition: opacity 0.2s; }
+    .paypal-btn:hover { opacity: 0.9; }
+    .popup-close { color: #444; font-size: 13px; cursor: pointer; background: none; border: none; font-family: 'Inter', sans-serif; }
+    .popup-close:hover { color: #fff; }
+    .code-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); }
+    .code-section p { color: #444; font-size: 13px; margin-bottom: 10px; }
+    .code-input-wrapper { display: flex; gap: 8px; }
+    .code-input-wrapper input { flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-family: 'Inter', sans-serif; font-size: 14px; outline: none; }
+    .code-input-wrapper button { padding: 10px 16px; border-radius: 8px; border: none; background: #6c63ff; color: #fff; font-family: 'Inter', sans-serif; cursor: pointer; font-size: 14px; }
+    .code-error { color: #ff6584; font-size: 12px; margin-top: 8px; display: none; }
+    .code-success { color: #00ff88; font-size: 12px; margin-top: 8px; display: none; }
+    .filters { display: none; justify-content: center; gap: 8px; margin-bottom: 30px; }
+    .filter-btn { padding: 8px 20px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #666; font-size: 13px; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s; }
+    .filter-btn.active, .filter-btn:hover { background: rgba(108,99,255,0.2); border-color: #6c63ff; color: #fff; }
+    #loading { text-align: center; padding: 60px; color: #444; display: none; }
+    .loading-spinner { width: 40px; height: 40px; border: 3px solid rgba(108,99,255,0.2); border-top-color: #6c63ff; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #results { display: none; }
+    .section { max-width: 1200px; margin: 0 auto 50px; padding: 0 30px; }
+    .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .section-header h2 { font-size: 18px; font-weight: 600; color: #ddd; }
+    .section-header span { color: #444; font-size: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .card { background: rgba(255,255,255,0.03); border-radius: 16px; padding: 16px; border: 1px solid rgba(255,255,255,0.06); transition: all 0.2s; }
+    .card:hover { background: rgba(255,255,255,0.05); border-color: rgba(108,99,255,0.3); transform: translateY(-2px); }
+    .card h3 { font-size: 13px; font-weight: 500; color: #ccc; margin-bottom: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card audio { width: 100%; accent-color: #6c63ff; }
+    .card video { width: 100%; border-radius: 10px; max-height: 180px; object-fit: cover; }
+    .card img { width: 100%; border-radius: 10px; }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
+    .card a { color: #6c63ff; font-size: 12px; text-decoration: none; font-weight: 500; }
+    .card a:hover { color: #ff6584; }
+    .empty { color: #333; font-size: 14px; padding: 20px 0; }
+    .video-wrapper { position: relative; cursor: pointer; border-radius: 10px; overflow: hidden; }
+    .video-wrapper img { width: 100%; max-height: 180px; object-fit: cover; display: block; }
+    .video-wrapper::after { content: '▶'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 40px; color: rgba(255,255,255,0.9); pointer-events: none; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+    footer { text-align: center; padding: 40px; color: #333; font-size: 13px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 60px; }
+    @media (max-width: 900px) { .categories-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 600px) { .categories-grid { grid-template-columns: repeat(2, 1fr); } .hero h1 { font-size: 36px; } nav { padding: 15px 20px; } .nav-links a { display: none; } }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">✦ Findly</div>
+    <div class="nav-links">
+      <a href="#">Accueil</a>
+      <a href="#">Catégories</a>
+      <a href="#">Tarifs</a>
+      <button class="nav-btn" id="navBtn" onclick="showPopup()">Passer Premium</button>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-badge">🎬 Pour les créateurs de contenu</div>
+    <h1>Trouve la ressource<br><span>parfaite</span> en secondes</h1>
+    <p>Sons, vidéos, GIFs — tout ce dont tu as besoin pour ton montage, au même endroit.</p>
+    <div class="search-container">
+      <div class="search-wrapper">
+        <input type="text" id="searchInput" placeholder="Ex: explosion gaming, ambiance horreur, nature calme..." />
+        <button onclick="search()">Rechercher</button>
+      </div>
+    </div>
+    <div class="categories-title">Ou explore par catégorie — <span style="color:#6c63ff">Premium</span></div>
+    <div class="categories-grid">
+      <div class="cat-card gaming locked" onclick="handleCatClick('gaming music hype')">
+        <span class="cat-icon">🎮</span>
+        <span class="cat-name">Gaming</span>
+        <span class="cat-desc">Hype, FPS, RPG</span>
+      </div>
+      <div class="cat-card nature locked" onclick="handleCatClick('nature ambient birds forest')">
+        <span class="cat-icon">🌿</span>
+        <span class="cat-name">Nature</span>
+        <span class="cat-desc">Forêt, mer, vent</span>
+      </div>
+      <div class="cat-card cinema locked" onclick="handleCatClick('epic cinematic orchestra')">
+        <span class="cat-icon">🎬</span>
+        <span class="cat-name">Cinéma épique</span>
+        <span class="cat-desc">Orchestral, drama</span>
+      </div>
+      <div class="cat-card horror locked" onclick="handleCatClick('horror tension dark scary')">
+        <span class="cat-icon">👻</span>
+        <span class="cat-name">Horreur</span>
+        <span class="cat-desc">Tension, suspense</span>
+      </div>
+      <div class="cat-card urbain locked" onclick="handleCatClick('urban city street noise')">
+        <span class="cat-icon">🏙️</span>
+        <span class="cat-name">Urbain</span>
+        <span class="cat-desc">Ville, rue, foule</span>
+      </div>
+      <div class="cat-card scifi locked" onclick="handleCatClick('sci-fi space futuristic')">
+        <span class="cat-icon">🚀</span>
+        <span class="cat-name">Sci-Fi</span>
+        <span class="cat-desc">Espace, futur</span>
+      </div>
+      <div class="cat-card action locked" onclick="handleCatClick('action explosion impact')">
+        <span class="cat-icon">💥</span>
+        <span class="cat-name">Action</span>
+        <span class="cat-desc">Explosions, combat</span>
+      </div>
+      <div class="cat-card comedie locked" onclick="handleCatClick('comedy fun cartoon silly')">
+        <span class="cat-icon">😂</span>
+        <span class="cat-name">Comédie</span>
+        <span class="cat-desc">Fun, cartoon, memes</span>
+      </div>
+      <div class="cat-card sfx locked" onclick="handleSFX()">
+        <span class="cat-icon">🎚️</span>
+        <span class="cat-name">SFX</span>
+        <span class="cat-desc">Transitions, impacts</span>
+      </div>
+    </div>
+
+    <div class="sfx-panel" id="sfxPanel">
+      <p class="sfx-title">🎚️ Choisis ton type de SFX :</p>
+      <div class="sfx-types">
+        <button class="sfx-type-btn" onclick="loadSFX('transition', this)">💨 Transitions / Whoosh</button>
+        <button class="sfx-type-btn" onclick="loadSFX('impact', this)">💥 Impacts</button>
+        <button class="sfx-type-btn" onclick="loadSFX('explosion', this)">🔥 Explosions</button>
+        <button class="sfx-type-btn" onclick="loadSFX('ui', this)">🖱️ UI / Interface</button>
+        <button class="sfx-type-btn" onclick="loadSFX('nature', this)">🌿 Nature</button>
+        <button class="sfx-type-btn" onclick="loadSFX('scary', this)">👻 Horreur</button>
+        <button class="sfx-type-btn" onclick="loadSFX('funny', this)">😂 Cartoon / Funny</button>
+        <button class="sfx-type-btn" onclick="loadSFX('cinematic', this)">🎬 Cinématique</button>
+      </div>
+      <div class="grid" id="sfxGrid"></div>
+    </div>
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="filter-btn active" onclick="filterAll()">Tout</button>
+    <button class="filter-btn" onclick="filterSection('sounds')">🔊 Sons</button>
+    <button class="filter-btn" onclick="filterSection('videos')">🎬 Vidéos</button>
+    <button class="filter-btn" onclick="filterSection('gifs')">😂 GIFs</button>
+  </div>
+
+  <div id="loading">
+    <div class="loading-spinner"></div>
+    <p>Recherche en cours...</p>
+  </div>
+
+  <div id="results">
+    <div class="section" id="sounds">
+      <div class="section-header">
+        <h2>🔊 Effets sonores</h2>
+        <span id="soundsCount"></span>
+      </div>
+      <div class="grid" id="soundsGrid"></div>
+    </div>
+    <div class="section" id="videos">
+      <div class="section-header">
+        <h2>🎬 Vidéos</h2>
+        <span id="videosCount"></span>
+      </div>
+      <div class="grid" id="videosGrid"></div>
+    </div>
+    <div class="section" id="gifs">
+      <div class="section-header">
+        <h2>😂 GIFs & Memes</h2>
+        <span id="gifsCount"></span>
+      </div>
+      <div class="grid" id="gifsGrid"></div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="popup">
+      <div style="font-size:40px;margin-bottom:16px">✦</div>
+      <h2>Passe à Findly Premium</h2>
+      <p>Une seule fois, accès à vie. Plus de limites, plus de résultats, accès aux packs.</p>
+      <div class="popup-price">20€</div>
+      <div class="popup-price-sub">Paiement unique — Accès à vie</div>
+      <ul class="popup-features">
+        <li>Recherches illimitées</li>
+        <li>50 résultats par catégorie</li>
+        <li>Accès à tous les packs prédéfinis</li>
+        <li>Accès aux SFX de transition</li>
+        <li>Accès aux futures fonctionnalités</li>
+      </ul>
+      <input type="email" class="email-input" id="buyerEmail" placeholder="Ton email pour recevoir ton code d'accès" />
+      <button class="paypal-btn" onclick="paypal()">💳 Payer 20€ avec PayPal</button>
+      <button class="popup-close" onclick="hidePopup()">Non merci, rester en gratuit</button>
+      <div class="code-section">
+        <p>Tu as déjà un code d'accès ?</p>
+        <div class="code-input-wrapper">
+          <input type="text" id="codeInput" placeholder="FINDLY-XXXX" />
+          <button onclick="verifyCode()">Activer</button>
+        </div>
+        <p class="code-error" id="codeError">Code invalide, vérifie et réessaie.</p>
+        <p class="code-success" id="codeSuccess">✓ Code activé ! Bienvenue en Premium 🎉</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>✦ Findly — Ressources libres de droits pour créateurs · 2026</p>
+  </footer>
+
+  <script>
+    var isPremium = false;
+    var hasSearched = false;
+
+    function init() {
+      fetch('/status')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          isPremium = data.isPremium;
+          hasSearched = data.hasSearched;
+          if (isPremium) unlockPremium();
+        });
+    }
+
+    function unlockPremium() {
+      isPremium = true;
+      document.querySelectorAll('.cat-card').forEach(function(c) { c.classList.remove('locked'); });
+      document.getElementById('navBtn').textContent = '✦ Premium';
+      document.getElementById('navBtn').classList.add('premium');
+      document.querySelector('.categories-title').innerHTML = 'Ou explore par catégorie';
+    }
+
+    function showPopup() {
+      document.getElementById('overlay').classList.add('show');
+    }
+
+    function hidePopup() {
+      document.getElementById('overlay').classList.remove('show');
+    }
+
+    function paypal() {
+      var email = document.getElementById('buyerEmail').value;
+      if (!email) {
+        alert('Entre ton email pour recevoir ton code d\'accès !');
+        return;
+      }
+      window.open('https://paypal.me/matheoCanes/20', '_blank');
+    }
+
+    function verifyCode() {
+      var code = document.getElementById('codeInput').value.trim().toUpperCase();
+      fetch('/verify-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: code })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.valid) {
+          document.getElementById('codeSuccess').style.display = 'block';
+          document.getElementById('codeError').style.display = 'none';
+          setTimeout(function() { unlockPremium(); hidePopup(); }, 1500);
+        } else {
+          document.getElementById('codeError').style.display = 'block';
+          document.getElementById('codeSuccess').style.display = 'none';
+        }
+      });
+    }
+
+    function handleCatClick(query) {
+      if (!isPremium) { showPopup(); return; }
+      search(query);
+    }
+
+    function handleSFX() {
+      if (!isPremium) { showPopup(); return; }
+      document.getElementById('sfxPanel').classList.toggle('show');
+      document.getElementById('results').style.display = 'none';
+      document.getElementById('filters').style.display = 'none';
+      window.scrollTo({ top: document.getElementById('sfxPanel').offsetTop - 100, behavior: 'smooth' });
+    }
+
+    function loadSFX(type, btn) {
+      document.querySelectorAll('.sfx-type-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('sfxGrid').innerHTML = '<div style="color:#444;padding:20px">Chargement...</div>';
+      fetch('/sfx?type=' + type)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          var grid = document.getElementById('sfxGrid');
+          grid.innerHTML = '';
+          if (data.sounds && data.sounds.length > 0) {
+            data.sounds.forEach(function(s) {
+              grid.innerHTML += '<div class="card"><h3>' + s.name + '</h3><audio controls src="' + s.previews['preview-hq-mp3'] + '"></audio><div class="card-footer"><a href="https://freesound.org/s/' + s.id + '" target="_blank">Voir sur Freesound →</a></div></div>';
+            });
+          } else {
+            grid.innerHTML = '<p class="empty">Aucun SFX trouvé</p>';
+          }
+        });
+    }
+
+    function playVideo(wrapper, src) {
+      var video = document.createElement('video');
+      video.controls = true;
+      video.autoplay = true;
+      video.src = src;
+      video.style.cssText = 'width:100%;border-radius:10px;max-height:180px;object-fit:cover';
+      wrapper.parentNode.replaceChild(video, wrapper);
+    }
+
+    function search(preset) {
+      var query = preset || document.getElementById('searchInput').value;
+      if (!query) return;
+
+      if (!isPremium && hasSearched) {
+        showPopup();
+        return;
+      }
+
+      hasSearched = true;
+      document.getElementById('searchInput').value = query;
+      document.getElementById('sfxPanel').classList.remove('show');
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('results').style.display = 'none';
+      document.getElementById('filters').style.display = 'none';
+
+      window.scrollTo({ top: document.getElementById('loading').offsetTop - 100, behavior: 'smooth' });
+
+      fetch('/search?q=' + encodeURIComponent(query) + '&premium=' + isPremium)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.blocked) { showPopup(); return; }
+
+          document.getElementById('loading').style.display = 'none';
+          document.getElementById('results').style.display = 'block';
+          document.getElementById('filters').style.display = 'flex';
+
+          var soundsGrid = document.getElementById('soundsGrid');
+          soundsGrid.innerHTML = '';
+          if (data.sounds && data.sounds.length > 0) {
+            document.getElementById('soundsCount').textContent = data.sounds.length + ' résultats';
+            data.sounds.forEach(function(s) {
+              soundsGrid.innerHTML += '<div class="card"><h3>' + s.name + '</h3><audio controls src="' + s.previews['preview-hq-mp3'] + '"></audio><div class="card-footer"><a href="https://freesound.org/s/' + s.id + '" target="_blank">Voir sur Freesound →</a></div></div>';
+            });
+          } else {
+            soundsGrid.innerHTML = '<p class="empty">Aucun son trouvé</p>';
+          }
+
+          var videosGrid = document.getElementById('videosGrid');
+          videosGrid.innerHTML = '';
+          if (data.videos && data.videos.length > 0) {
+            document.getElementById('videosCount').textContent = data.videos.length + ' résultats';
+            data.videos.forEach(function(v) {
+              var file = v.video_files && v.video_files[0];
+              if (!file) return;
+              var thumb = v.image || '';
+              var cardHtml = '<div class="card"><h3>' + v.url.split('/').slice(-2, -1)[0] + '</h3>';
+              if (thumb) {
+                cardHtml += '<div class="video-wrapper" onclick="playVideo(this, \'' + file.link + '\')"><img src="' + thumb + '" /></div>';
+              } else {
+                cardHtml += '<video controls src="' + file.link + '" style="width:100%;border-radius:10px;max-height:180px"></video>';
+              }
+              cardHtml += '<div class="card-footer"><a href="' + v.url + '" target="_blank">Voir sur Pexels →</a></div></div>';
+              videosGrid.innerHTML += cardHtml;
+            });
+          } else {
+            videosGrid.innerHTML = '<p class="empty">Aucune vidéo trouvée</p>';
+          }
+
+          var gifsGrid = document.getElementById('gifsGrid');
+          gifsGrid.innerHTML = '';
+          if (data.gifs && data.gifs.length > 0) {
+            document.getElementById('gifsCount').textContent = data.gifs.length + ' résultats';
+            data.gifs.forEach(function(g) {
+              gifsGrid.innerHTML += '<div class="card"><h3>' + g.title + '</h3><img src="' + g.images.fixed_height.url + '" /><div class="card-footer"><a href="' + g.url + '" target="_blank">Voir sur Giphy →</a></div></div>';
+            });
+          } else {
+            gifsGrid.innerHTML = '<p class="empty">Aucun GIF trouvé</p>';
+          }
+
+          if (!isPremium) {
+            document.getElementById('results').insertAdjacentHTML('beforeend', '<div style="text-align:center;padding:40px;border-top:1px solid rgba(255,255,255,0.05);margin-top:20px"><p style="color:#666;margin-bottom:16px">Tu as utilisé ta recherche gratuite</p><button onclick="showPopup()" style="padding:14px 30px;border-radius:12px;border:none;background:linear-gradient(135deg,#6c63ff,#ff6584);color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">🚀 Débloquer l\'accès illimité — 20€</button></div>');
+          }
+        });
+    }
+
+    function filterSection(type) {
+      document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+      event.target.classList.add('active');
+      document.getElementById('sounds').style.display = type === 'sounds' ? 'block' : 'none';
+      document.getElementById('videos').style.display = type === 'videos' ? 'block' : 'none';
+      document.getElementById('gifs').style.display = type === 'gifs' ? 'block' : 'none';
+    }
+
+    function filterAll() {
+      document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+      event.target.classList.add('active');
+      document.getElementById('sounds').style.display = 'block';
+      document.getElementById('videos').style.display = 'block';
+      document.getElementById('gifs').style.display = 'block';
+    }
+
+    document.getElementById('searchInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') search();
+    });
+
+    init();
+  </script>
+</body>
+</html>
