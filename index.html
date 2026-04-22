@@ -4,34 +4,70 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Findly - Ressources créatives pour monteurs</title>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Inter', sans-serif; background: #080810; color: #fff; min-height: 100vh; background-image: radial-gradient(ellipse at 20% 20%, rgba(108,99,255,0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(255,101,132,0.1) 0%, transparent 50%); }
+
+    /* NAV */
     nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; background: rgba(8,8,16,0.8); }
-    .nav-logo { font-size: 22px; font-weight: 800; background: linear-gradient(135deg, #6c63ff, #ff6584); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nav-logo { font-size: 22px; font-weight: 800; background: linear-gradient(135deg, #6c63ff, #ff6584); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
     .nav-links { display: flex; gap: 20px; align-items: center; }
-    .nav-links a { color: #888; text-decoration: none; font-size: 14px; transition: color 0.2s; }
+    .nav-links a { color: #888; text-decoration: none; font-size: 14px; transition: color 0.2s; cursor: pointer; }
     .nav-links a:hover { color: #fff; }
     .nav-btn { padding: 8px 20px; border-radius: 50px; border: 1px solid rgba(108,99,255,0.5); background: transparent; color: #fff; font-size: 14px; cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif; }
     .nav-btn:hover { background: #6c63ff; border-color: #6c63ff; }
     .nav-btn.premium { background: linear-gradient(135deg, #6c63ff, #ff6584); border: none; }
+
+    /* PAGES */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* PAGE ACCUEIL */
     .hero { text-align: center; padding: 80px 20px 50px; }
     .hero-badge { display: inline-block; padding: 6px 16px; border-radius: 50px; background: rgba(108,99,255,0.15); border: 1px solid rgba(108,99,255,0.3); color: #a09af0; font-size: 13px; margin-bottom: 24px; }
     .hero h1 { font-size: 64px; font-weight: 800; line-height: 1.1; margin-bottom: 20px; background: linear-gradient(135deg, #fff 0%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .hero h1 span { background: linear-gradient(135deg, #6c63ff, #ff6584); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .hero p { color: #666; font-size: 18px; max-width: 500px; margin: 0 auto 40px; line-height: 1.6; }
-    .search-container { max-width: 700px; margin: 0 auto 20px; padding: 0 20px; }
+    .hero-btns { display: flex; gap: 16px; justify-content: center; margin-bottom: 60px; }
+    .btn-primary { padding: 16px 32px; border-radius: 12px; border: none; background: linear-gradient(135deg, #6c63ff, #ff6584); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity 0.2s; }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-secondary { padding: 16px 32px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
+    .btn-secondary:hover { background: rgba(255,255,255,0.05); }
+
+    /* PREVIEW */
+    .preview-section { max-width: 1200px; margin: 0 auto 60px; padding: 0 30px; }
+    .preview-title { text-align: center; color: #444; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 30px; }
+    .preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .preview-col h3 { font-size: 14px; color: #666; margin-bottom: 12px; }
+    .preview-card { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 10px; }
+    .preview-card audio { width: 100%; accent-color: #6c63ff; }
+    .preview-card video { width: 100%; border-radius: 8px; max-height: 120px; object-fit: cover; }
+    .preview-card img { width: 100%; border-radius: 8px; }
+    .preview-card p { font-size: 12px; color: #555; margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .preview-blur { position: relative; }
+    .preview-blur::after { content: '🔒 Voir plus avec Premium'; position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: linear-gradient(transparent, #080810); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 10px; color: #6c63ff; font-size: 13px; font-weight: 600; }
+
+    /* FEATURES */
+    .features { max-width: 1000px; margin: 0 auto 80px; padding: 0 30px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .feature-card { background: rgba(255,255,255,0.03); border-radius: 16px; padding: 24px; border: 1px solid rgba(255,255,255,0.06); text-align: center; }
+    .feature-icon { font-size: 32px; margin-bottom: 12px; }
+    .feature-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    .feature-card p { color: #555; font-size: 14px; line-height: 1.6; }
+
+    /* PAGE RECHERCHE */
+    .search-page { padding: 40px 20px; }
+    .search-container { max-width: 700px; margin: 0 auto 30px; }
     .search-wrapper { display: flex; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 6px 6px 6px 20px; transition: border-color 0.2s; }
     .search-wrapper:focus-within { border-color: #6c63ff; }
     .search-wrapper input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 16px; font-family: 'Inter', sans-serif; padding: 10px 0; }
     .search-wrapper input::placeholder { color: #444; }
-    .search-wrapper button { padding: 12px 24px; border-radius: 10px; border: none; background: linear-gradient(135deg, #6c63ff, #ff6584); color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity 0.2s; }
-    .search-wrapper button:hover { opacity: 0.9; }
-    .categories-title { text-align: center; color: #444; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin: 50px 0 24px; }
-    .categories-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; max-width: 1100px; margin: 0 auto 30px; padding: 0 20px; }
-    .cat-card { position: relative; border-radius: 20px; padding: 25px 15px; cursor: pointer; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); transition: all 0.3s; text-align: center; }
-    .cat-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.15); }
+    .search-wrapper button { padding: 12px 24px; border-radius: 10px; border: none; background: linear-gradient(135deg, #6c63ff, #ff6584); color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; }
+    .categories-title { text-align: center; color: #444; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin: 30px 0 20px; }
+    .categories-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; max-width: 1100px; margin: 0 auto 40px; padding: 0 20px; }
+    .cat-card { position: relative; border-radius: 20px; padding: 25px 15px; cursor: pointer; border: 1px solid rgba(255,255,255,0.06); transition: all 0.3s; text-align: center; }
+    .cat-card:hover { transform: translateY(-4px); }
     .cat-card.locked::after { content: '🔒'; position: absolute; top: 10px; right: 12px; font-size: 14px; }
     .cat-card.gaming { background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(0,212,255,0.05)); border-color: rgba(0,212,255,0.2); }
     .cat-card.gaming:hover { box-shadow: 0 20px 40px rgba(0,212,255,0.15); }
@@ -42,7 +78,6 @@
     .cat-card.horror { background: linear-gradient(135deg, rgba(180,0,255,0.1), rgba(180,0,255,0.05)); border-color: rgba(180,0,255,0.2); }
     .cat-card.horror:hover { box-shadow: 0 20px 40px rgba(180,0,255,0.15); }
     .cat-card.urbain { background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)); border-color: rgba(255,255,255,0.1); }
-    .cat-card.urbain:hover { box-shadow: 0 20px 40px rgba(255,255,255,0.08); }
     .cat-card.scifi { background: linear-gradient(135deg, rgba(0,150,255,0.1), rgba(0,150,255,0.05)); border-color: rgba(0,150,255,0.2); }
     .cat-card.scifi:hover { box-shadow: 0 20px 40px rgba(0,150,255,0.15); }
     .cat-card.action { background: linear-gradient(135deg, rgba(255,60,0,0.1), rgba(255,60,0,0.05)); border-color: rgba(255,60,0,0.2); }
@@ -60,28 +95,6 @@
     .sfx-types { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
     .sfx-type-btn { padding: 8px 18px; border-radius: 50px; border: 1px solid rgba(255,100,200,0.3); background: rgba(255,100,200,0.05); color: #ccc; font-size: 13px; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s; }
     .sfx-type-btn:hover, .sfx-type-btn.active { background: rgba(255,100,200,0.2); border-color: rgba(255,100,200,0.6); color: #fff; }
-    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 1000; align-items: center; justify-content: center; }
-    .overlay.show { display: flex; }
-    .popup { background: #0f0f1a; border: 1px solid rgba(108,99,255,0.3); border-radius: 24px; padding: 40px; max-width: 480px; width: 90%; text-align: center; max-height: 90vh; overflow-y: auto; }
-    .popup h2 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
-    .popup p { color: #666; font-size: 15px; margin-bottom: 24px; line-height: 1.6; }
-    .popup-price { font-size: 48px; font-weight: 800; background: linear-gradient(135deg, #6c63ff, #ff6584); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
-    .popup-price-sub { color: #444; font-size: 13px; margin-bottom: 30px; }
-    .popup-features { text-align: left; margin-bottom: 24px; }
-    .popup-features li { list-style: none; padding: 8px 0; color: #aaa; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .popup-features li::before { content: '✓ '; color: #6c63ff; font-weight: 700; }
-    .email-input { width: 100%; padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-family: 'Inter', sans-serif; font-size: 14px; margin-bottom: 12px; outline: none; }
-    .paypal-btn { display: block; width: 100%; padding: 16px; border-radius: 12px; border: none; background: #0070ba; color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; margin-bottom: 12px; transition: opacity 0.2s; }
-    .paypal-btn:hover { opacity: 0.9; }
-    .popup-close { color: #444; font-size: 13px; cursor: pointer; background: none; border: none; font-family: 'Inter', sans-serif; }
-    .popup-close:hover { color: #fff; }
-    .code-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); }
-    .code-section p { color: #444; font-size: 13px; margin-bottom: 10px; }
-    .code-input-wrapper { display: flex; gap: 8px; }
-    .code-input-wrapper input { flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-family: 'Inter', sans-serif; font-size: 14px; outline: none; }
-    .code-input-wrapper button { padding: 10px 16px; border-radius: 8px; border: none; background: #6c63ff; color: #fff; font-family: 'Inter', sans-serif; cursor: pointer; font-size: 14px; }
-    .code-error { color: #ff6584; font-size: 12px; margin-top: 8px; display: none; }
-    .code-success { color: #00ff88; font-size: 12px; margin-top: 8px; display: none; }
     .filters { display: none; justify-content: center; gap: 8px; margin-bottom: 30px; }
     .filter-btn { padding: 8px 20px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #666; font-size: 13px; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s; }
     .filter-btn.active, .filter-btn:hover { background: rgba(108,99,255,0.2); border-color: #6c63ff; color: #fff; }
@@ -107,139 +120,271 @@
     .video-wrapper { position: relative; cursor: pointer; border-radius: 10px; overflow: hidden; }
     .video-wrapper img { width: 100%; max-height: 180px; object-fit: cover; display: block; }
     .video-wrapper::after { content: '▶'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 40px; color: rgba(255,255,255,0.9); pointer-events: none; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+
+    /* PAGE TARIFS */
+    .pricing-page { padding: 80px 20px; text-align: center; }
+    .pricing-page h1 { font-size: 48px; font-weight: 800; margin-bottom: 16px; background: linear-gradient(135deg, #fff 0%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .pricing-page p { color: #666; font-size: 18px; margin-bottom: 60px; }
+    .pricing-cards { display: flex; gap: 24px; justify-content: center; max-width: 800px; margin: 0 auto 60px; flex-wrap: wrap; }
+    .pricing-card { background: rgba(255,255,255,0.03); border-radius: 24px; padding: 40px; border: 1px solid rgba(255,255,255,0.06); flex: 1; min-width: 280px; text-align: left; }
+    .pricing-card.featured { border-color: rgba(108,99,255,0.4); background: rgba(108,99,255,0.05); }
+    .pricing-card .badge { display: inline-block; padding: 4px 12px; border-radius: 50px; background: linear-gradient(135deg, #6c63ff, #ff6584); color: #fff; font-size: 12px; font-weight: 600; margin-bottom: 20px; }
+    .pricing-card .price { font-size: 48px; font-weight: 800; margin-bottom: 4px; }
+    .pricing-card.featured .price { background: linear-gradient(135deg, #6c63ff, #ff6584); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .pricing-card .price-sub { color: #444; font-size: 13px; margin-bottom: 30px; }
+    .pricing-card ul { list-style: none; margin-bottom: 30px; }
+    .pricing-card ul li { padding: 8px 0; color: #aaa; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .pricing-card ul li::before { content: '✓ '; color: #6c63ff; font-weight: 700; }
+    .pricing-card ul li.disabled { color: #333; }
+    .pricing-card ul li.disabled::before { content: '✗ '; color: #333; }
+    .buy-btn { display: block; width: 100%; padding: 16px; border-radius: 12px; border: none; background: linear-gradient(135deg, #6c63ff, #ff6584); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity 0.2s; }
+    .buy-btn:hover { opacity: 0.9; }
+    .free-btn { display: block; width: 100%; padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
+    .free-btn:hover { background: rgba(255,255,255,0.05); }
+
+    /* OVERLAY */
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 1000; align-items: center; justify-content: center; }
+    .overlay.show { display: flex; }
+    .popup { background: #0f0f1a; border: 1px solid rgba(108,99,255,0.3); border-radius: 24px; padding: 40px; max-width: 480px; width: 90%; text-align: center; max-height: 90vh; overflow-y: auto; }
+    .popup h2 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+    .popup-price { font-size: 48px; font-weight: 800; background: linear-gradient(135deg, #6c63ff, #ff6584); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+    .popup-price-sub { color: #444; font-size: 13px; margin-bottom: 20px; }
+    .popup-features { text-align: left; margin-bottom: 24px; }
+    .popup-features li { list-style: none; padding: 8px 0; color: #aaa; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .popup-features li::before { content: '✓ '; color: #6c63ff; font-weight: 700; }
+    .email-input { width: 100%; padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-family: 'Inter', sans-serif; font-size: 14px; margin-bottom: 12px; outline: none; box-sizing: border-box; }
+    .email-input:focus { border-color: #6c63ff; }
+    .paypal-btn { display: block; width: 100%; padding: 16px; border-radius: 12px; border: none; background: #0070ba; color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; margin-bottom: 12px; transition: opacity 0.2s; }
+    .paypal-btn:hover { opacity: 0.9; }
+    .popup-close { color: #444; font-size: 13px; cursor: pointer; background: none; border: none; font-family: 'Inter', sans-serif; }
+    .popup-close:hover { color: #fff; }
+    .code-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); }
+    .code-section p { color: #444; font-size: 13px; margin-bottom: 10px; }
+    .code-input-wrapper { display: flex; gap: 8px; }
+    .code-input-wrapper input { flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-family: 'Inter', sans-serif; font-size: 14px; outline: none; }
+    .code-input-wrapper button { padding: 10px 16px; border-radius: 8px; border: none; background: #6c63ff; color: #fff; font-family: 'Inter', sans-serif; cursor: pointer; font-size: 14px; }
+    .code-error { color: #ff6584; font-size: 12px; margin-top: 8px; display: none; }
+    .code-success { color: #00ff88; font-size: 12px; margin-top: 8px; display: none; }
+    .email-sent { color: #00ff88; font-size: 13px; margin-top: 8px; display: none; text-align: center; }
+
     footer { text-align: center; padding: 40px; color: #333; font-size: 13px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 60px; }
-    @media (max-width: 900px) { .categories-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 900px) { .categories-grid { grid-template-columns: repeat(3, 1fr); } .preview-grid { grid-template-columns: 1fr; } .features { grid-template-columns: 1fr; } }
     @media (max-width: 600px) { .categories-grid { grid-template-columns: repeat(2, 1fr); } .hero h1 { font-size: 36px; } nav { padding: 15px 20px; } .nav-links a { display: none; } }
   </style>
 </head>
 <body>
 
   <nav>
-    <div class="nav-logo">✦ Findly</div>
+    <div class="nav-logo" onclick="showPage('home')">✦ Findly</div>
     <div class="nav-links">
-      <a href="#">Accueil</a>
-      <a href="#">Catégories</a>
-      <a href="#">Tarifs</a>
+      <a onclick="showPage('home')">Accueil</a>
+      <a onclick="showPage('search')">Rechercher</a>
+      <a onclick="showPage('pricing')">Tarifs</a>
       <button class="nav-btn" id="navBtn" onclick="showPopup()">Passer Premium</button>
     </div>
   </nav>
 
-  <div class="hero">
-    <div class="hero-badge">🎬 Pour les créateurs de contenu</div>
-    <h1>Trouve la ressource<br><span>parfaite</span> en secondes</h1>
-    <p>Sons, vidéos, GIFs — tout ce dont tu as besoin pour ton montage, au même endroit.</p>
-    <div class="search-container">
-      <div class="search-wrapper">
-        <input type="text" id="searchInput" placeholder="Ex: explosion gaming, ambiance horreur, nature calme..." />
-        <button onclick="search()">Rechercher</button>
-      </div>
-    </div>
-    <div class="categories-title">Ou explore par catégorie — <span style="color:#6c63ff">Premium</span></div>
-    <div class="categories-grid">
-      <div class="cat-card gaming locked" onclick="handleCatClick('gaming music hype')">
-        <span class="cat-icon">🎮</span>
-        <span class="cat-name">Gaming</span>
-        <span class="cat-desc">Hype, FPS, RPG</span>
-      </div>
-      <div class="cat-card nature locked" onclick="handleCatClick('nature ambient birds forest')">
-        <span class="cat-icon">🌿</span>
-        <span class="cat-name">Nature</span>
-        <span class="cat-desc">Forêt, mer, vent</span>
-      </div>
-      <div class="cat-card cinema locked" onclick="handleCatClick('epic cinematic orchestra')">
-        <span class="cat-icon">🎬</span>
-        <span class="cat-name">Cinéma épique</span>
-        <span class="cat-desc">Orchestral, drama</span>
-      </div>
-      <div class="cat-card horror locked" onclick="handleCatClick('horror tension dark scary')">
-        <span class="cat-icon">👻</span>
-        <span class="cat-name">Horreur</span>
-        <span class="cat-desc">Tension, suspense</span>
-      </div>
-      <div class="cat-card urbain locked" onclick="handleCatClick('urban city street noise')">
-        <span class="cat-icon">🏙️</span>
-        <span class="cat-name">Urbain</span>
-        <span class="cat-desc">Ville, rue, foule</span>
-      </div>
-      <div class="cat-card scifi locked" onclick="handleCatClick('sci-fi space futuristic')">
-        <span class="cat-icon">🚀</span>
-        <span class="cat-name">Sci-Fi</span>
-        <span class="cat-desc">Espace, futur</span>
-      </div>
-      <div class="cat-card action locked" onclick="handleCatClick('action explosion impact')">
-        <span class="cat-icon">💥</span>
-        <span class="cat-name">Action</span>
-        <span class="cat-desc">Explosions, combat</span>
-      </div>
-      <div class="cat-card comedie locked" onclick="handleCatClick('comedy fun cartoon silly')">
-        <span class="cat-icon">😂</span>
-        <span class="cat-name">Comédie</span>
-        <span class="cat-desc">Fun, cartoon, memes</span>
-      </div>
-      <div class="cat-card sfx locked" onclick="handleSFX()">
-        <span class="cat-icon">🎚️</span>
-        <span class="cat-name">SFX</span>
-        <span class="cat-desc">Transitions, impacts</span>
+  <!-- PAGE ACCUEIL -->
+  <div class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-badge">🎬 Pour les créateurs de contenu</div>
+      <h1>Trouve la ressource<br><span>parfaite</span> en une seconde</h1>
+      <p>Sons, vidéos, GIFs — tout ce dont tu as besoin pour ton montage, au même endroit.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="showPage('search')">🔍 Commencer à chercher</button>
+        <button class="btn-secondary" onclick="showPage('pricing')">Voir les tarifs</button>
       </div>
     </div>
 
-    <div class="sfx-panel" id="sfxPanel">
-      <p class="sfx-title">🎚️ Choisis ton type de SFX :</p>
-      <div class="sfx-types">
-        <button class="sfx-type-btn" onclick="loadSFX('transition', this)">💨 Transitions / Whoosh</button>
-        <button class="sfx-type-btn" onclick="loadSFX('impact', this)">💥 Impacts</button>
-        <button class="sfx-type-btn" onclick="loadSFX('explosion', this)">🔥 Explosions</button>
-        <button class="sfx-type-btn" onclick="loadSFX('ui', this)">🖱️ UI / Interface</button>
-        <button class="sfx-type-btn" onclick="loadSFX('nature', this)">🌿 Nature</button>
-        <button class="sfx-type-btn" onclick="loadSFX('scary', this)">👻 Horreur</button>
-        <button class="sfx-type-btn" onclick="loadSFX('funny', this)">😂 Cartoon / Funny</button>
-        <button class="sfx-type-btn" onclick="loadSFX('cinematic', this)">🎬 Cinématique</button>
+    <div class="preview-section">
+      <p class="preview-title">Aperçu de ce que tu vas trouver</p>
+      <div class="preview-grid">
+        <div>
+          <h3>🔊 Effets sonores</h3>
+          <div id="previewSounds"></div>
+        </div>
+        <div>
+          <h3>🎬 Vidéos</h3>
+          <div id="previewVideos"></div>
+        </div>
+        <div>
+          <h3>😂 GIFs</h3>
+          <div id="previewGifs"></div>
+        </div>
       </div>
-      <div class="grid" id="sfxGrid"></div>
+    </div>
+
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3>Recherche par IA</h3>
+        <p>Tape en français, l'IA comprend ce que tu cherches et trouve les meilleurs résultats.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Résultats en une seconde</h3>
+        <p>Sons, vidéos et GIFs au même endroit. Plus besoin de chercher sur 5 sites différents.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✅</div>
+        <h3>100% libre de droits</h3>
+        <p>Toutes les ressources sont libres de droits. Utilise-les dans tes projets sans stress.</p>
+      </div>
     </div>
   </div>
 
-  <div class="filters" id="filters">
-    <button class="filter-btn active" onclick="filterAll()">Tout</button>
-    <button class="filter-btn" onclick="filterSection('sounds')">🔊 Sons</button>
-    <button class="filter-btn" onclick="filterSection('videos')">🎬 Vidéos</button>
-    <button class="filter-btn" onclick="filterSection('gifs')">😂 GIFs</button>
+  <!-- PAGE RECHERCHE -->
+  <div class="page" id="page-search">
+    <div class="search-page">
+      <div class="search-container">
+        <div class="search-wrapper">
+          <input type="text" id="searchInput" placeholder="Ex: explosion gaming, ambiance horreur, nature calme..." />
+          <button onclick="search()">Rechercher</button>
+        </div>
+      </div>
+
+      <div class="categories-title" id="catTitle">Ou explore par catégorie — <span style="color:#6c63ff">Premium</span></div>
+      <div class="categories-grid">
+        <div class="cat-card gaming locked" onclick="handleCatClick('gaming music hype')">
+          <span class="cat-icon">🎮</span>
+          <span class="cat-name">Gaming</span>
+          <span class="cat-desc">Hype, FPS, RPG</span>
+        </div>
+        <div class="cat-card nature locked" onclick="handleCatClick('nature ambient birds forest')">
+          <span class="cat-icon">🌿</span>
+          <span class="cat-name">Nature</span>
+          <span class="cat-desc">Forêt, mer, vent</span>
+        </div>
+        <div class="cat-card cinema locked" onclick="handleCatClick('epic cinematic orchestra')">
+          <span class="cat-icon">🎬</span>
+          <span class="cat-name">Cinéma épique</span>
+          <span class="cat-desc">Orchestral, drama</span>
+        </div>
+        <div class="cat-card horror locked" onclick="handleCatClick('horror tension dark scary')">
+          <span class="cat-icon">👻</span>
+          <span class="cat-name">Horreur</span>
+          <span class="cat-desc">Tension, suspense</span>
+        </div>
+        <div class="cat-card urbain locked" onclick="handleCatClick('urban city street noise')">
+          <span class="cat-icon">🏙️</span>
+          <span class="cat-name">Urbain</span>
+          <span class="cat-desc">Ville, rue, foule</span>
+        </div>
+        <div class="cat-card scifi locked" onclick="handleCatClick('sci-fi space futuristic')">
+          <span class="cat-icon">🚀</span>
+          <span class="cat-name">Sci-Fi</span>
+          <span class="cat-desc">Espace, futur</span>
+        </div>
+        <div class="cat-card action locked" onclick="handleCatClick('action explosion impact')">
+          <span class="cat-icon">💥</span>
+          <span class="cat-name">Action</span>
+          <span class="cat-desc">Explosions, combat</span>
+        </div>
+        <div class="cat-card comedie locked" onclick="handleCatClick('comedy fun cartoon silly')">
+          <span class="cat-icon">😂</span>
+          <span class="cat-name">Comédie</span>
+          <span class="cat-desc">Fun, cartoon, memes</span>
+        </div>
+        <div class="cat-card sfx locked" onclick="handleSFX()">
+          <span class="cat-icon">🎚️</span>
+          <span class="cat-name">SFX</span>
+          <span class="cat-desc">Transitions, impacts</span>
+        </div>
+      </div>
+
+      <div class="sfx-panel" id="sfxPanel">
+        <p class="sfx-title">🎚️ Choisis ton type de SFX :</p>
+        <div class="sfx-types">
+          <button class="sfx-type-btn" onclick="loadSFX('transition', this)">💨 Transitions / Whoosh</button>
+          <button class="sfx-type-btn" onclick="loadSFX('impact', this)">💥 Impacts</button>
+          <button class="sfx-type-btn" onclick="loadSFX('explosion', this)">🔥 Explosions</button>
+          <button class="sfx-type-btn" onclick="loadSFX('ui', this)">🖱️ UI / Interface</button>
+          <button class="sfx-type-btn" onclick="loadSFX('nature', this)">🌿 Nature</button>
+          <button class="sfx-type-btn" onclick="loadSFX('scary', this)">👻 Horreur</button>
+          <button class="sfx-type-btn" onclick="loadSFX('funny', this)">😂 Cartoon / Funny</button>
+          <button class="sfx-type-btn" onclick="loadSFX('cinematic', this)">🎬 Cinématique</button>
+        </div>
+        <div class="grid" id="sfxGrid"></div>
+      </div>
+
+      <div class="filters" id="filters">
+        <button class="filter-btn active" onclick="filterAll()">Tout</button>
+        <button class="filter-btn" onclick="filterSection('sounds')">🔊 Sons</button>
+        <button class="filter-btn" onclick="filterSection('videos')">🎬 Vidéos</button>
+        <button class="filter-btn" onclick="filterSection('gifs')">😂 GIFs</button>
+      </div>
+
+      <div id="loading">
+        <div class="loading-spinner"></div>
+        <p>Recherche en cours...</p>
+      </div>
+
+      <div id="results">
+        <div class="section" id="sounds">
+          <div class="section-header">
+            <h2>🔊 Effets sonores</h2>
+            <span id="soundsCount"></span>
+          </div>
+          <div class="grid" id="soundsGrid"></div>
+        </div>
+        <div class="section" id="videos">
+          <div class="section-header">
+            <h2>🎬 Vidéos</h2>
+            <span id="videosCount"></span>
+          </div>
+          <div class="grid" id="videosGrid"></div>
+        </div>
+        <div class="section" id="gifs">
+          <div class="section-header">
+            <h2>😂 GIFs & Memes</h2>
+            <span id="gifsCount"></span>
+          </div>
+          <div class="grid" id="gifsGrid"></div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div id="loading">
-    <div class="loading-spinner"></div>
-    <p>Recherche en cours...</p>
+  <!-- PAGE TARIFS -->
+  <div class="page" id="page-pricing">
+    <div class="pricing-page">
+      <h1>Tarifs simples</h1>
+      <p>Un seul paiement, un accès à vie.</p>
+      <div class="pricing-cards">
+        <div class="pricing-card">
+          <div class="price">0€</div>
+          <div class="price-sub">Gratuit pour toujours</div>
+          <ul>
+            <li>1 recherche gratuite</li>
+            <li>3 résultats par catégorie</li>
+            <li class="disabled">Packs prédéfinis</li>
+            <li class="disabled">SFX de transition</li>
+            <li class="disabled">50 résultats</li>
+          </ul>
+          <button class="free-btn" onclick="showPage('search')">Commencer gratuitement</button>
+        </div>
+        <div class="pricing-card featured">
+          <div class="badge">⭐ Le plus populaire</div>
+          <div class="price">20€</div>
+          <div class="price-sub">Paiement unique — Accès à vie</div>
+          <ul>
+            <li>Recherches illimitées</li>
+            <li>50 résultats par catégorie</li>
+            <li>Accès aux packs prédéfinis</li>
+            <li>SFX de transition</li>
+            <li>Futures fonctionnalités incluses</li>
+          </ul>
+          <button class="buy-btn" onclick="showPopup()">Obtenir l'accès Premium</button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div id="results">
-    <div class="section" id="sounds">
-      <div class="section-header">
-        <h2>🔊 Effets sonores</h2>
-        <span id="soundsCount"></span>
-      </div>
-      <div class="grid" id="soundsGrid"></div>
-    </div>
-    <div class="section" id="videos">
-      <div class="section-header">
-        <h2>🎬 Vidéos</h2>
-        <span id="videosCount"></span>
-      </div>
-      <div class="grid" id="videosGrid"></div>
-    </div>
-    <div class="section" id="gifs">
-      <div class="section-header">
-        <h2>😂 GIFs & Memes</h2>
-        <span id="gifsCount"></span>
-      </div>
-      <div class="grid" id="gifsGrid"></div>
-    </div>
-  </div>
-
+  <!-- POPUP PREMIUM -->
   <div class="overlay" id="overlay">
     <div class="popup">
       <div style="font-size:40px;margin-bottom:16px">✦</div>
       <h2>Passe à Findly Premium</h2>
-      <p>Une seule fois, accès à vie. Plus de limites, plus de résultats, accès aux packs.</p>
       <div class="popup-price">20€</div>
       <div class="popup-price-sub">Paiement unique — Accès à vie</div>
       <ul class="popup-features">
@@ -249,7 +394,8 @@
         <li>Accès aux SFX de transition</li>
         <li>Accès aux futures fonctionnalités</li>
       </ul>
-      <input type="email" class="email-input" id="buyerEmail" placeholder="Ton email pour recevoir ton code d'accès" />
+      <input type="email" class="email-input" id="buyerEmail" placeholder="Ton email pour recevoir ton code d'accès *" />
+      <p class="email-sent" id="emailSent">✓ Email enregistré ! Tu recevras ton code après paiement.</p>
       <button class="paypal-btn" onclick="paypal()">💳 Payer 20€ avec PayPal</button>
       <button class="popup-close" onclick="hidePopup()">Non merci, rester en gratuit</button>
       <div class="code-section">
@@ -265,10 +411,13 @@
   </div>
 
   <footer>
-    <p>✦ Findly — Ressources libres de droits pour créateurs · 2026</p>
+    <p>✦ Findly — Ressources libres de droits pour créateurs · 2026 · <a href="mailto:findlyfaq@gmail.com" style="color:#6c63ff;text-decoration:none;">Contact</a></p>
   </footer>
 
   <script>
+    // Init EmailJS
+    emailjs.init('zEPpnW4pkNhktz2YJ');
+
     var isPremium = false;
     var hasSearched = false;
 
@@ -280,6 +429,40 @@
           hasSearched = data.hasSearched;
           if (isPremium) unlockPremium();
         });
+      loadPreview();
+    }
+
+    function showPage(page) {
+      document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+      document.getElementById('page-' + page).classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    function loadPreview() {
+      fetch('/preview')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          var soundsEl = document.getElementById('previewSounds');
+          var videosEl = document.getElementById('previewVideos');
+          var gifsEl = document.getElementById('previewGifs');
+
+          if (data.sounds) {
+            data.sounds.forEach(function(s) {
+              soundsEl.innerHTML += '<div class="preview-card"><audio controls src="' + s.previews['preview-hq-mp3'] + '"></audio><p>' + s.name + '</p></div>';
+            });
+          }
+          if (data.videos) {
+            data.videos.forEach(function(v) {
+              var thumb = v.image || '';
+              if (thumb) videosEl.innerHTML += '<div class="preview-card"><img src="' + thumb + '" style="width:100%;border-radius:8px;max-height:100px;object-fit:cover"/><p>' + v.url.split('/').slice(-2,-1)[0] + '</p></div>';
+            });
+          }
+          if (data.gifs) {
+            data.gifs.forEach(function(g) {
+              gifsEl.innerHTML += '<div class="preview-card"><img src="' + g.images.fixed_height.url + '" /><p>' + g.title + '</p></div>';
+            });
+          }
+        });
     }
 
     function unlockPremium() {
@@ -287,7 +470,8 @@
       document.querySelectorAll('.cat-card').forEach(function(c) { c.classList.remove('locked'); });
       document.getElementById('navBtn').textContent = '✦ Premium';
       document.getElementById('navBtn').classList.add('premium');
-      document.querySelector('.categories-title').innerHTML = 'Ou explore par catégorie';
+      var catTitle = document.getElementById('catTitle');
+      if (catTitle) catTitle.innerHTML = 'Ou explore par catégorie';
     }
 
     function showPopup() {
@@ -299,12 +483,24 @@
     }
 
     function paypal() {
-      var email = document.getElementById('buyerEmail').value;
-      if (!email) {
-        alert('Entre ton email pour recevoir ton code d\'accès !');
+      var email = document.getElementById('buyerEmail').value.trim();
+      if (!email || !email.includes('@')) {
+        document.getElementById('buyerEmail').style.borderColor = '#ff6584';
+        document.getElementById('buyerEmail').placeholder = 'Entre ton email svp !';
         return;
       }
-      window.open('https://paypal.me/matheoCanes/20', '_blank');
+      document.getElementById('buyerEmail').style.borderColor = '';
+
+      emailjs.send('service_2ks5lge', 'template_qdk1j9c', {
+        buyer_email: email,
+        message: 'Nouvel acheteur Findly : ' + email
+      }).then(function() {
+        document.getElementById('emailSent').style.display = 'block';
+      }).catch(function(err) {
+        console.log('Erreur email:', err);
+      });
+
+      window.open('https://paypal.me/TONPSEUDO/20', '_blank');
     }
 
     function verifyCode() {
@@ -337,7 +533,6 @@
       document.getElementById('sfxPanel').classList.toggle('show');
       document.getElementById('results').style.display = 'none';
       document.getElementById('filters').style.display = 'none';
-      window.scrollTo({ top: document.getElementById('sfxPanel').offsetTop - 100, behavior: 'smooth' });
     }
 
     function loadSFX(type, btn) {
@@ -383,8 +578,6 @@
       document.getElementById('loading').style.display = 'block';
       document.getElementById('results').style.display = 'none';
       document.getElementById('filters').style.display = 'none';
-
-      window.scrollTo({ top: document.getElementById('loading').offsetTop - 100, behavior: 'smooth' });
 
       fetch('/search?q=' + encodeURIComponent(query) + '&premium=' + isPremium)
         .then(function(r) { return r.json(); })
