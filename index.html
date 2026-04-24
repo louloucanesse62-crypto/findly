@@ -3,179 +3,217 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Findly - Ressources créatives pour monteurs</title>
+  <title>Sonrix - Ressources créatives pour monteurs</title>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: #080810; color: #fff; min-height: 100vh; background-image: radial-gradient(ellipse at 20% 20%, rgba(108,99,255,0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(255,101,132,0.1) 0%, transparent 50%); }
+
+    :root {
+      --bg: #0d0d0d;
+      --bg2: #141414;
+      --bg3: #1a1a1a;
+      --border: rgba(255,255,255,0.06);
+      --cream: #f0e6d3;
+      --cream2: #c8b99a;
+      --gold: #c9a96e;
+      --gold2: #e8c98a;
+      --text: #f0e6d3;
+      --text2: #8a7a6a;
+      --text3: #5a4a3a;
+    }
+
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
     /* NAV */
-    nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; background: rgba(8,8,16,0.8); }
-    .nav-logo { font-size: 22px; font-weight: 800; background: linear-gradient(135deg, #6c63ff, #ff6584); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
-    .nav-links { display: flex; gap: 20px; align-items: center; }
-    .nav-links a { color: #888; text-decoration: none; font-size: 14px; transition: color 0.2s; cursor: pointer; }
-    .nav-links a:hover { color: #fff; }
-    .nav-btn { padding: 8px 20px; border-radius: 50px; border: 1px solid rgba(108,99,255,0.5); background: transparent; color: #fff; font-size: 14px; cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif; }
-    .nav-btn:hover { background: #6c63ff; border-color: #6c63ff; }
-    .nav-btn.premium { background: linear-gradient(135deg, #6c63ff, #ff6584); border: none; }
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; background: rgba(13,13,13,0.95); backdrop-filter: blur(20px); }
+    .nav-logo { font-size: 20px; font-weight: 800; color: var(--cream); cursor: pointer; letter-spacing: -0.5px; }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { color: var(--text2); text-decoration: none; font-size: 14px; transition: color 0.2s; cursor: pointer; font-weight: 500; }
+    .nav-links a:hover { color: var(--cream); }
+    .nav-btn { padding: 9px 22px; border-radius: 8px; border: 1px solid var(--gold); background: transparent; color: var(--gold); font-size: 14px; cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif; font-weight: 600; }
+    .nav-btn:hover { background: var(--gold); color: #000; }
+    .nav-btn.premium { background: var(--gold); color: #000; border-color: var(--gold); }
 
     /* PAGES */
     .page { display: none; }
     .page.active { display: block; }
 
-    /* PAGE ACCUEIL */
-    .hero { text-align: center; padding: 80px 20px 50px; }
-    .hero-badge { display: inline-block; padding: 6px 16px; border-radius: 50px; background: rgba(108,99,255,0.15); border: 1px solid rgba(108,99,255,0.3); color: #a09af0; font-size: 13px; margin-bottom: 24px; }
-    .hero h1 { font-size: 64px; font-weight: 800; line-height: 1.1; margin-bottom: 20px; background: linear-gradient(135deg, #fff 0%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero h1 span { background: linear-gradient(135deg, #6c63ff, #ff6584); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero p { color: #666; font-size: 18px; max-width: 500px; margin: 0 auto 40px; line-height: 1.6; }
-    .hero-btns { display: flex; gap: 16px; justify-content: center; margin-bottom: 60px; }
-    .btn-primary { padding: 16px 32px; border-radius: 12px; border: none; background: linear-gradient(135deg, #6c63ff, #ff6584); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity 0.2s; }
-    .btn-primary:hover { opacity: 0.9; }
-    .btn-secondary { padding: 16px 32px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
-    .btn-secondary:hover { background: rgba(255,255,255,0.05); }
+    /* HERO */
+    .hero { text-align: center; padding: 100px 20px 60px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 6px; background: rgba(201,169,110,0.1); border: 1px solid rgba(201,169,110,0.2); color: var(--gold); font-size: 12px; font-weight: 600; margin-bottom: 32px; letter-spacing: 1px; text-transform: uppercase; }
+    .hero h1 { font-size: 72px; font-weight: 800; line-height: 1.05; margin-bottom: 24px; color: var(--cream); letter-spacing: -2px; }
+    .hero h1 span { color: var(--gold); }
+    .hero p { color: var(--text2); font-size: 18px; max-width: 480px; margin: 0 auto 48px; line-height: 1.7; font-weight: 400; }
+    .hero-btns { display: flex; gap: 16px; justify-content: center; margin-bottom: 80px; }
+    .btn-primary { padding: 14px 32px; border-radius: 8px; border: none; background: var(--gold); color: #000; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
+    .btn-primary:hover { background: var(--gold2); transform: translateY(-1px); }
+    .btn-secondary { padding: 14px 32px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text2); font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
+    .btn-secondary:hover { border-color: var(--text2); color: var(--cream); }
+
+    /* STATS */
+    .stats { display: flex; justify-content: center; gap: 60px; margin-bottom: 80px; padding: 0 20px; }
+    .stat { text-align: center; }
+    .stat-number { font-size: 32px; font-weight: 800; color: var(--cream); letter-spacing: -1px; }
+    .stat-label { font-size: 13px; color: var(--text2); margin-top: 4px; font-weight: 500; }
 
     /* PREVIEW */
-    .preview-section { max-width: 1200px; margin: 0 auto 60px; padding: 0 30px; }
-    .preview-title { text-align: center; color: #444; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 30px; }
-    .preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .preview-col h3 { font-size: 14px; color: #666; margin-bottom: 12px; }
-    .preview-card { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 10px; }
-    .preview-card audio { width: 100%; accent-color: #6c63ff; }
-    .preview-card video { width: 100%; border-radius: 8px; max-height: 120px; object-fit: cover; }
-    .preview-card img { width: 100%; border-radius: 8px; }
-    .preview-card p { font-size: 12px; color: #555; margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .preview-blur { position: relative; }
-    .preview-blur::after { content: '🔒 Voir plus avec Premium'; position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: linear-gradient(transparent, #080810); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 10px; color: #6c63ff; font-size: 13px; font-weight: 600; }
+    .preview-section { max-width: 1100px; margin: 0 auto 80px; padding: 0 30px; }
+    .section-label { text-align: center; color: var(--text3); font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 40px; }
+    .preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .preview-col-title { font-size: 13px; color: var(--text2); margin-bottom: 14px; font-weight: 600; letter-spacing: 0.5px; }
+    .preview-card { background: var(--bg2); border-radius: 10px; padding: 14px; border: 1px solid var(--border); margin-bottom: 12px; transition: border-color 0.2s; }
+    .preview-card:hover { border-color: rgba(201,169,110,0.2); }
+    .preview-card audio { width: 100%; accent-color: var(--gold); }
+    .preview-card img { width: 100%; border-radius: 6px; max-height: 100px; object-fit: cover; }
+    .preview-card p { font-size: 11px; color: var(--text3); margin-top: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* FEATURES */
-    .features { max-width: 1000px; margin: 0 auto 80px; padding: 0 30px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-    .feature-card { background: rgba(255,255,255,0.03); border-radius: 16px; padding: 24px; border: 1px solid rgba(255,255,255,0.06); text-align: center; }
-    .feature-icon { font-size: 32px; margin-bottom: 12px; }
-    .feature-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
-    .feature-card p { color: #555; font-size: 14px; line-height: 1.6; }
+    .features-section { max-width: 1100px; margin: 0 auto 80px; padding: 0 30px; }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .feature-card { background: var(--bg2); border-radius: 12px; padding: 28px; border: 1px solid var(--border); }
+    .feature-icon { font-size: 28px; margin-bottom: 16px; }
+    .feature-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--cream); }
+    .feature-card p { color: var(--text2); font-size: 14px; line-height: 1.6; }
 
-    /* PAGE RECHERCHE */
-    .search-page { padding: 40px 20px; }
-    .search-container { max-width: 700px; margin: 0 auto 30px; }
-    .search-wrapper { display: flex; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 6px 6px 6px 20px; transition: border-color 0.2s; }
-    .search-wrapper:focus-within { border-color: #6c63ff; }
-    .search-wrapper input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 16px; font-family: 'Inter', sans-serif; padding: 10px 0; }
-    .search-wrapper input::placeholder { color: #444; }
-    .search-wrapper button { padding: 12px 24px; border-radius: 10px; border: none; background: linear-gradient(135deg, #6c63ff, #ff6584); color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; }
-    .categories-title { text-align: center; color: #444; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin: 30px 0 20px; }
-    .categories-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; max-width: 1100px; margin: 0 auto 40px; padding: 0 20px; }
-    .cat-card { position: relative; border-radius: 20px; padding: 25px 15px; cursor: pointer; border: 1px solid rgba(255,255,255,0.06); transition: all 0.3s; text-align: center; }
-    .cat-card:hover { transform: translateY(-4px); }
-    .cat-card.locked::after { content: '🔒'; position: absolute; top: 10px; right: 12px; font-size: 14px; }
-    .cat-card.gaming { background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(0,212,255,0.05)); border-color: rgba(0,212,255,0.2); }
-    .cat-card.gaming:hover { box-shadow: 0 20px 40px rgba(0,212,255,0.15); }
-    .cat-card.nature { background: linear-gradient(135deg, rgba(0,255,136,0.1), rgba(0,255,136,0.05)); border-color: rgba(0,255,136,0.2); }
-    .cat-card.nature:hover { box-shadow: 0 20px 40px rgba(0,255,136,0.15); }
-    .cat-card.cinema { background: linear-gradient(135deg, rgba(255,200,0,0.1), rgba(255,200,0,0.05)); border-color: rgba(255,200,0,0.2); }
-    .cat-card.cinema:hover { box-shadow: 0 20px 40px rgba(255,200,0,0.15); }
-    .cat-card.horror { background: linear-gradient(135deg, rgba(180,0,255,0.1), rgba(180,0,255,0.05)); border-color: rgba(180,0,255,0.2); }
-    .cat-card.horror:hover { box-shadow: 0 20px 40px rgba(180,0,255,0.15); }
-    .cat-card.urbain { background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)); border-color: rgba(255,255,255,0.1); }
-    .cat-card.scifi { background: linear-gradient(135deg, rgba(0,150,255,0.1), rgba(0,150,255,0.05)); border-color: rgba(0,150,255,0.2); }
-    .cat-card.scifi:hover { box-shadow: 0 20px 40px rgba(0,150,255,0.15); }
-    .cat-card.action { background: linear-gradient(135deg, rgba(255,60,0,0.1), rgba(255,60,0,0.05)); border-color: rgba(255,60,0,0.2); }
-    .cat-card.action:hover { box-shadow: 0 20px 40px rgba(255,60,0,0.15); }
-    .cat-card.comedie { background: linear-gradient(135deg, rgba(255,200,50,0.1), rgba(255,200,50,0.05)); border-color: rgba(255,200,50,0.2); }
-    .cat-card.comedie:hover { box-shadow: 0 20px 40px rgba(255,200,50,0.15); }
-    .cat-card.sfx { background: linear-gradient(135deg, rgba(255,100,200,0.1), rgba(255,100,200,0.05)); border-color: rgba(255,100,200,0.2); }
-    .cat-card.sfx:hover { box-shadow: 0 20px 40px rgba(255,100,200,0.15); }
-    .cat-icon { font-size: 36px; margin-bottom: 10px; display: block; }
-    .cat-name { font-size: 14px; font-weight: 600; color: #fff; display: block; }
-    .cat-desc { font-size: 11px; color: #666; margin-top: 4px; display: block; }
-    .sfx-panel { display: none; max-width: 1100px; margin: 0 auto 40px; padding: 0 20px; }
+    /* SEARCH PAGE */
+    .search-page { padding: 50px 20px; max-width: 1200px; margin: 0 auto; }
+    .search-header { margin-bottom: 40px; }
+    .search-header h2 { font-size: 28px; font-weight: 800; color: var(--cream); margin-bottom: 8px; letter-spacing: -0.5px; }
+    .search-header p { color: var(--text2); font-size: 14px; }
+    .quota-bar { display: flex; gap: 12px; margin-bottom: 24px; }
+    .quota-item { display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 6px; background: var(--bg2); border: 1px solid var(--border); font-size: 13px; }
+    .quota-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .quota-dot.green { background: #4caf50; }
+    .quota-dot.red { background: #f44336; }
+    .quota-dot.gold { background: var(--gold); }
+    .search-wrapper { display: flex; align-items: center; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 6px 6px 6px 20px; transition: border-color 0.2s; margin-bottom: 40px; }
+    .search-wrapper:focus-within { border-color: var(--gold); }
+    .search-wrapper input { flex: 1; background: transparent; border: none; outline: none; color: var(--cream); font-size: 15px; font-family: 'Inter', sans-serif; padding: 10px 0; }
+    .search-wrapper input::placeholder { color: var(--text3); }
+    .search-wrapper button { padding: 11px 24px; border-radius: 7px; border: none; background: var(--gold); color: #000; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.2s; }
+    .search-wrapper button:hover { background: var(--gold2); }
+
+    /* CATEGORIES */
+    .cat-section-title { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--text3); margin-bottom: 20px; }
+    .categories-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 50px; }
+    .cat-card { border-radius: 14px; padding: 22px 14px; cursor: pointer; border: 1px solid var(--border); transition: all 0.3s; text-align: center; background: var(--bg2); }
+    .cat-card:hover { border-color: rgba(201,169,110,0.3); transform: translateY(-3px); background: var(--bg3); }
+    .cat-card.used { opacity: 0.4; cursor: not-allowed; }
+    .cat-card.used:hover { transform: none; }
+    .cat-icon { font-size: 32px; margin-bottom: 10px; display: block; }
+    .cat-name { font-size: 13px; font-weight: 700; color: var(--cream); display: block; }
+    .cat-desc { font-size: 11px; color: var(--text2); margin-top: 4px; display: block; }
+
+    /* SFX */
+    .sfx-panel { display: none; margin-bottom: 40px; }
     .sfx-panel.show { display: block; }
-    .sfx-title { font-size: 16px; font-weight: 600; color: #ddd; margin-bottom: 16px; }
-    .sfx-types { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
-    .sfx-type-btn { padding: 8px 18px; border-radius: 50px; border: 1px solid rgba(255,100,200,0.3); background: rgba(255,100,200,0.05); color: #ccc; font-size: 13px; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s; }
-    .sfx-type-btn:hover, .sfx-type-btn.active { background: rgba(255,100,200,0.2); border-color: rgba(255,100,200,0.6); color: #fff; }
-    .filters { display: none; justify-content: center; gap: 8px; margin-bottom: 30px; }
-    .filter-btn { padding: 8px 20px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #666; font-size: 13px; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s; }
-    .filter-btn.active, .filter-btn:hover { background: rgba(108,99,255,0.2); border-color: #6c63ff; color: #fff; }
-    #loading { text-align: center; padding: 60px; color: #444; display: none; }
-    .loading-spinner { width: 40px; height: 40px; border: 3px solid rgba(108,99,255,0.2); border-top-color: #6c63ff; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    #results { display: none; }
-    .section { max-width: 1200px; margin: 0 auto 50px; padding: 0 30px; }
-    .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .section-header h2 { font-size: 18px; font-weight: 600; color: #ddd; }
-    .section-header span { color: #444; font-size: 14px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-    .card { background: rgba(255,255,255,0.03); border-radius: 16px; padding: 16px; border: 1px solid rgba(255,255,255,0.06); transition: all 0.2s; }
-    .card:hover { background: rgba(255,255,255,0.05); border-color: rgba(108,99,255,0.3); transform: translateY(-2px); }
-    .card h3 { font-size: 13px; font-weight: 500; color: #ccc; margin-bottom: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .card audio { width: 100%; accent-color: #6c63ff; }
-    .card video { width: 100%; border-radius: 10px; max-height: 180px; object-fit: cover; }
-    .card img { width: 100%; border-radius: 10px; }
-    .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
-    .card a { color: #6c63ff; font-size: 12px; text-decoration: none; font-weight: 500; }
-    .card a:hover { color: #ff6584; }
-    .empty { color: #333; font-size: 14px; padding: 20px 0; }
-    .video-wrapper { position: relative; cursor: pointer; border-radius: 10px; overflow: hidden; }
-    .video-wrapper img { width: 100%; max-height: 180px; object-fit: cover; display: block; }
-    .video-wrapper::after { content: '▶'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 40px; color: rgba(255,255,255,0.9); pointer-events: none; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+    .sfx-types { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; margin-top: 16px; }
+    .sfx-type-btn { padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg2); color: var(--text2); font-size: 12px; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s; font-weight: 600; }
+    .sfx-type-btn:hover, .sfx-type-btn.active { background: var(--gold); border-color: var(--gold); color: #000; }
 
-    /* PAGE TARIFS */
-    .pricing-page { padding: 80px 20px; text-align: center; }
-    .pricing-page h1 { font-size: 48px; font-weight: 800; margin-bottom: 16px; background: linear-gradient(135deg, #fff 0%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .pricing-page p { color: #666; font-size: 18px; margin-bottom: 60px; }
-    .pricing-cards { display: flex; gap: 24px; justify-content: center; max-width: 800px; margin: 0 auto 60px; flex-wrap: wrap; }
-    .pricing-card { background: rgba(255,255,255,0.03); border-radius: 24px; padding: 40px; border: 1px solid rgba(255,255,255,0.06); flex: 1; min-width: 280px; text-align: left; }
-    .pricing-card.featured { border-color: rgba(108,99,255,0.4); background: rgba(108,99,255,0.05); }
-    .pricing-card .badge { display: inline-block; padding: 4px 12px; border-radius: 50px; background: linear-gradient(135deg, #6c63ff, #ff6584); color: #fff; font-size: 12px; font-weight: 600; margin-bottom: 20px; }
-    .pricing-card .price { font-size: 48px; font-weight: 800; margin-bottom: 4px; }
-    .pricing-card.featured .price { background: linear-gradient(135deg, #6c63ff, #ff6584); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .pricing-card .price-sub { color: #444; font-size: 13px; margin-bottom: 30px; }
-    .pricing-card ul { list-style: none; margin-bottom: 30px; }
-    .pricing-card ul li { padding: 8px 0; color: #aaa; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .pricing-card ul li::before { content: '✓ '; color: #6c63ff; font-weight: 700; }
-    .pricing-card ul li.disabled { color: #333; }
-    .pricing-card ul li.disabled::before { content: '✗ '; color: #333; }
-    .buy-btn { display: block; width: 100%; padding: 16px; border-radius: 12px; border: none; background: linear-gradient(135deg, #6c63ff, #ff6584); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity 0.2s; }
-    .buy-btn:hover { opacity: 0.9; }
-    .free-btn { display: block; width: 100%; padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
-    .free-btn:hover { background: rgba(255,255,255,0.05); }
+    /* FILTERS */
+    .filters { display: none; gap: 8px; margin-bottom: 30px; }
+    .filters.show { display: flex; }
+    .filter-btn { padding: 8px 18px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--text2); font-size: 13px; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s; font-weight: 600; }
+    .filter-btn.active, .filter-btn:hover { background: var(--gold); border-color: var(--gold); color: #000; }
+
+    /* LOADING */
+    #loading { text-align: center; padding: 60px; color: var(--text2); display: none; }
+    .loading-spinner { width: 36px; height: 36px; border: 2px solid rgba(201,169,110,0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* RESULTS */
+    #results { display: none; }
+    .section { margin-bottom: 50px; }
+    .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .section-header h2 { font-size: 16px; font-weight: 700; color: var(--cream); }
+    .section-header span { color: var(--text3); font-size: 13px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+    .card { background: var(--bg2); border-radius: 12px; padding: 16px; border: 1px solid var(--border); transition: all 0.2s; }
+    .card:hover { border-color: rgba(201,169,110,0.2); transform: translateY(-2px); }
+    .card h3 { font-size: 12px; font-weight: 600; color: var(--cream); margin-bottom: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card audio { width: 100%; accent-color: var(--gold); }
+    .card video { width: 100%; border-radius: 8px; max-height: 180px; object-fit: cover; }
+    .card img { width: 100%; border-radius: 8px; }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
+    .card a { color: var(--gold); font-size: 12px; text-decoration: none; font-weight: 600; }
+    .card a:hover { color: var(--gold2); }
+    .empty { color: var(--text3); font-size: 14px; padding: 20px 0; }
+    .video-wrapper { position: relative; cursor: pointer; border-radius: 8px; overflow: hidden; }
+    .video-wrapper img { width: 100%; max-height: 180px; object-fit: cover; display: block; }
+    .video-wrapper::after { content: '▶'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 36px; color: rgba(255,255,255,0.9); pointer-events: none; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+
+    /* PRICING PAGE */
+    .pricing-page { padding: 80px 20px; text-align: center; max-width: 900px; margin: 0 auto; }
+    .pricing-page h1 { font-size: 48px; font-weight: 800; color: var(--cream); margin-bottom: 16px; letter-spacing: -1px; }
+    .pricing-page > p { color: var(--text2); font-size: 17px; margin-bottom: 60px; }
+    .pricing-cards { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+    .pricing-card { background: var(--bg2); border-radius: 16px; padding: 36px; border: 1px solid var(--border); flex: 1; min-width: 260px; max-width: 340px; text-align: left; }
+    .pricing-card.featured { border-color: rgba(201,169,110,0.3); background: linear-gradient(145deg, #1a1710, #141414); }
+    .pricing-badge { display: inline-block; padding: 4px 12px; border-radius: 4px; background: var(--gold); color: #000; font-size: 11px; font-weight: 700; margin-bottom: 20px; letter-spacing: 0.5px; }
+    .pricing-price { font-size: 52px; font-weight: 800; color: var(--cream); letter-spacing: -2px; margin-bottom: 4px; }
+    .pricing-card.featured .pricing-price { color: var(--gold); }
+    .pricing-sub { color: var(--text3); font-size: 13px; margin-bottom: 28px; }
+    .pricing-card ul { list-style: none; margin-bottom: 28px; }
+    .pricing-card ul li { padding: 9px 0; color: var(--text2); font-size: 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+    .pricing-card ul li::before { content: '✓'; color: var(--gold); font-weight: 700; flex-shrink: 0; }
+    .pricing-card ul li.no::before { content: '×'; color: var(--text3); }
+    .pricing-card ul li.no { color: var(--text3); }
+    .buy-btn { display: block; width: 100%; padding: 14px; border-radius: 8px; border: none; background: var(--gold); color: #000; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
+    .buy-btn:hover { background: var(--gold2); transform: translateY(-1px); }
+    .free-btn { display: block; width: 100%; padding: 14px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text2); font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
+    .free-btn:hover { border-color: var(--text2); color: var(--cream); }
 
     /* OVERLAY */
-    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 1000; align-items: center; justify-content: center; }
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 1000; align-items: center; justify-content: center; }
     .overlay.show { display: flex; }
-    .popup { background: #0f0f1a; border: 1px solid rgba(108,99,255,0.3); border-radius: 24px; padding: 40px; max-width: 480px; width: 90%; text-align: center; max-height: 90vh; overflow-y: auto; }
-    .popup h2 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
-    .popup-price { font-size: 48px; font-weight: 800; background: linear-gradient(135deg, #6c63ff, #ff6584); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
-    .popup-price-sub { color: #444; font-size: 13px; margin-bottom: 20px; }
-    .popup-features { text-align: left; margin-bottom: 24px; }
-    .popup-features li { list-style: none; padding: 8px 0; color: #aaa; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .popup-features li::before { content: '✓ '; color: #6c63ff; font-weight: 700; }
-    .email-input { width: 100%; padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-family: 'Inter', sans-serif; font-size: 14px; margin-bottom: 12px; outline: none; box-sizing: border-box; }
-    .email-input:focus { border-color: #6c63ff; }
-    .paypal-btn { display: block; width: 100%; padding: 16px; border-radius: 12px; border: none; background: #0070ba; color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; margin-bottom: 12px; transition: opacity 0.2s; }
+    .popup { background: var(--bg2); border: 1px solid rgba(201,169,110,0.2); border-radius: 20px; padding: 40px; max-width: 460px; width: 90%; text-align: center; max-height: 90vh; overflow-y: auto; }
+    .popup-icon { font-size: 36px; margin-bottom: 16px; }
+    .popup h2 { font-size: 22px; font-weight: 800; color: var(--cream); margin-bottom: 8px; letter-spacing: -0.5px; }
+    .popup-desc { color: var(--text2); font-size: 14px; margin-bottom: 24px; line-height: 1.6; }
+    .popup-price { font-size: 52px; font-weight: 800; color: var(--gold); letter-spacing: -2px; margin-bottom: 4px; }
+    .popup-price-sub { color: var(--text3); font-size: 13px; margin-bottom: 24px; }
+    .popup-features { text-align: left; margin-bottom: 24px; background: var(--bg3); border-radius: 10px; padding: 16px; }
+    .popup-features li { list-style: none; padding: 7px 0; color: var(--text2); font-size: 13px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+    .popup-features li:last-child { border-bottom: none; }
+    .popup-features li::before { content: '✓'; color: var(--gold); font-weight: 700; }
+    .email-input { width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg3); color: var(--cream); font-family: 'Inter', sans-serif; font-size: 14px; margin-bottom: 12px; outline: none; }
+    .email-input:focus { border-color: var(--gold); }
+    .paypal-btn { display: block; width: 100%; padding: 14px; border-radius: 8px; border: none; background: #0070ba; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; margin-bottom: 10px; transition: opacity 0.2s; }
     .paypal-btn:hover { opacity: 0.9; }
-    .popup-close { color: #444; font-size: 13px; cursor: pointer; background: none; border: none; font-family: 'Inter', sans-serif; }
-    .popup-close:hover { color: #fff; }
-    .code-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); }
-    .code-section p { color: #444; font-size: 13px; margin-bottom: 10px; }
+    .popup-close { color: var(--text3); font-size: 13px; cursor: pointer; background: none; border: none; font-family: 'Inter', sans-serif; padding: 8px; }
+    .popup-close:hover { color: var(--cream); }
+    .code-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .code-label { color: var(--text3); font-size: 12px; margin-bottom: 10px; font-weight: 600; letter-spacing: 0.5px; }
     .code-input-wrapper { display: flex; gap: 8px; }
-    .code-input-wrapper input { flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-family: 'Inter', sans-serif; font-size: 14px; outline: none; }
-    .code-input-wrapper button { padding: 10px 16px; border-radius: 8px; border: none; background: #6c63ff; color: #fff; font-family: 'Inter', sans-serif; cursor: pointer; font-size: 14px; }
-    .code-error { color: #ff6584; font-size: 12px; margin-top: 8px; display: none; }
-    .code-success { color: #00ff88; font-size: 12px; margin-top: 8px; display: none; }
-    .email-sent { color: #00ff88; font-size: 13px; margin-top: 8px; display: none; text-align: center; }
+    .code-input-wrapper input { flex: 1; padding: 10px 14px; border-radius: 7px; border: 1px solid var(--border); background: var(--bg3); color: var(--cream); font-family: 'Inter', sans-serif; font-size: 13px; outline: none; letter-spacing: 1px; }
+    .code-input-wrapper button { padding: 10px 16px; border-radius: 7px; border: none; background: var(--gold); color: #000; font-family: 'Inter', sans-serif; cursor: pointer; font-size: 13px; font-weight: 700; }
+    .code-error { color: #e57373; font-size: 12px; margin-top: 8px; display: none; }
+    .code-success { color: #81c784; font-size: 12px; margin-top: 8px; display: none; }
+    .email-sent { color: #81c784; font-size: 12px; margin-top: 8px; display: none; }
 
-    footer { text-align: center; padding: 40px; color: #333; font-size: 13px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 60px; }
-    @media (max-width: 900px) { .categories-grid { grid-template-columns: repeat(3, 1fr); } .preview-grid { grid-template-columns: 1fr; } .features { grid-template-columns: 1fr; } }
-    @media (max-width: 600px) { .categories-grid { grid-template-columns: repeat(2, 1fr); } .hero h1 { font-size: 36px; } nav { padding: 15px 20px; } .nav-links a { display: none; } }
+    /* UPSELL */
+    .upsell-banner { background: linear-gradient(135deg, #1a1710, #141414); border: 1px solid rgba(201,169,110,0.2); border-radius: 12px; padding: 24px 30px; text-align: center; margin: 30px 0; }
+    .upsell-banner h3 { font-size: 16px; font-weight: 700; color: var(--cream); margin-bottom: 8px; }
+    .upsell-banner p { color: var(--text2); font-size: 14px; margin-bottom: 16px; }
+    .upsell-banner button { padding: 12px 28px; border-radius: 8px; border: none; background: var(--gold); color: #000; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; }
+
+    /* TIMER */
+    .timer-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 6px; background: rgba(201,169,110,0.1); border: 1px solid rgba(201,169,110,0.15); color: var(--gold); font-size: 12px; font-weight: 600; margin-bottom: 20px; }
+
+    footer { text-align: center; padding: 40px; color: var(--text3); font-size: 13px; border-top: 1px solid var(--border); margin-top: 60px; }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    @media (max-width: 900px) { .categories-grid { grid-template-columns: repeat(3, 1fr); } .preview-grid { grid-template-columns: 1fr; } .features-grid { grid-template-columns: 1fr; } .stats { gap: 30px; } }
+    @media (max-width: 600px) { .categories-grid { grid-template-columns: repeat(2, 1fr); } .hero h1 { font-size: 40px; } nav { padding: 15px 20px; } .nav-links a { display: none; } .hero-btns { flex-direction: column; align-items: center; } }
   </style>
 </head>
 <body>
 
   <nav>
-    <div class="nav-logo" onclick="showPage('home')">✦ Findly</div>
+    <div class="nav-logo" onclick="showPage('home')">◈ Son<span>rix</span></div>
     <div class="nav-links">
       <a onclick="showPage('home')">Accueil</a>
       <a onclick="showPage('search')">Rechercher</a>
@@ -187,48 +225,70 @@
   <!-- PAGE ACCUEIL -->
   <div class="page active" id="page-home">
     <div class="hero">
-      <div class="hero-badge">🎬 Pour les créateurs de contenu</div>
+      <div class="hero-badge">✦ Pour les créateurs de contenu</div>
       <h1>Trouve la ressource<br><span>parfaite</span> en une seconde</h1>
-      <p>Sons, vidéos, GIFs — tout ce dont tu as besoin pour ton montage, au même endroit.</p>
+      <p>Sons, vidéos, GIFs libres de droits — tout ce dont tu as besoin pour ton montage, au même endroit.</p>
       <div class="hero-btns">
-        <button class="btn-primary" onclick="showPage('search')">🔍 Commencer à chercher</button>
+        <button class="btn-primary" onclick="showPage('search')">Commencer gratuitement →</button>
         <button class="btn-secondary" onclick="showPage('pricing')">Voir les tarifs</button>
       </div>
     </div>
 
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-number">500K+</div>
+        <div class="stat-label">Ressources disponibles</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">3</div>
+        <div class="stat-label">Sources agrégées</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Libre de droits</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">&lt;1s</div>
+        <div class="stat-label">Temps de recherche</div>
+      </div>
+    </div>
+
     <div class="preview-section">
-      <p class="preview-title">Aperçu de ce que tu vas trouver</p>
+      <p class="section-label">Aperçu des ressources disponibles</p>
       <div class="preview-grid">
         <div>
-          <h3>🔊 Effets sonores</h3>
+          <p class="preview-col-title">🔊 Effets sonores</p>
           <div id="previewSounds"></div>
         </div>
         <div>
-          <h3>🎬 Vidéos</h3>
+          <p class="preview-col-title">🎬 Vidéos</p>
           <div id="previewVideos"></div>
         </div>
         <div>
-          <h3>😂 GIFs</h3>
+          <p class="preview-col-title">😂 GIFs & Memes</p>
           <div id="previewGifs"></div>
         </div>
       </div>
     </div>
 
-    <div class="features">
-      <div class="feature-card">
-        <div class="feature-icon">🤖</div>
-        <h3>Recherche par IA</h3>
-        <p>Tape en français, l'IA comprend ce que tu cherches et trouve les meilleurs résultats.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <h3>Résultats en une seconde</h3>
-        <p>Sons, vidéos et GIFs au même endroit. Plus besoin de chercher sur 5 sites différents.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">✅</div>
-        <h3>100% libre de droits</h3>
-        <p>Toutes les ressources sont libres de droits. Utilise-les dans tes projets sans stress.</p>
+    <div class="features-section">
+      <p class="section-label">Pourquoi Sonrix</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🤖</div>
+          <h3>Recherche par IA</h3>
+          <p>Tape en français, l'IA comprend exactement ce que tu cherches et reformule pour trouver les meilleurs résultats.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Tout au même endroit</h3>
+          <p>Sons, vidéos et GIFs en une seule recherche. Fini de perdre du temps sur 5 sites différents.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✅</div>
+          <h3>100% libre de droits</h3>
+          <p>Toutes les ressources sont libres de droits. Utilise-les dans tes projets commerciaux sans aucun stress.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -236,56 +296,62 @@
   <!-- PAGE RECHERCHE -->
   <div class="page" id="page-search">
     <div class="search-page">
-      <div class="search-container">
-        <div class="search-wrapper">
-          <input type="text" id="searchInput" placeholder="Ex: explosion gaming, ambiance horreur, nature calme..." />
-          <button onclick="search()">Rechercher</button>
-        </div>
+      <div class="search-header">
+        <h2>Rechercher des ressources</h2>
+        <p>Décris ce que tu cherches en français — l'IA s'occupe du reste</p>
       </div>
 
-      <div class="categories-title" id="catTitle">Ou explore par catégorie — <span style="color:#6c63ff">Premium</span></div>
+      <div id="quotaBar" class="quota-bar"></div>
+      <div id="timerBadge" style="display:none" class="timer-badge">⏱ Prochain quota disponible dans <span id="timerText"></span></div>
+
+      <div class="search-wrapper">
+        <input type="text" id="searchInput" placeholder="Ex: explosion cinématique, ambiance forêt, intro gaming..." />
+        <button onclick="search()">Rechercher</button>
+      </div>
+
+      <p class="cat-section-title">Packs prédéfinis</p>
       <div class="categories-grid">
-        <div class="cat-card gaming locked" onclick="handleCatClick('gaming music hype')">
+        <div class="cat-card" id="cat-gaming" onclick="handleCatClick('gaming music hype', this)">
           <span class="cat-icon">🎮</span>
           <span class="cat-name">Gaming</span>
           <span class="cat-desc">Hype, FPS, RPG</span>
         </div>
-        <div class="cat-card nature locked" onclick="handleCatClick('nature ambient birds forest')">
+        <div class="cat-card" id="cat-nature" onclick="handleCatClick('nature ambient birds forest', this)">
           <span class="cat-icon">🌿</span>
           <span class="cat-name">Nature</span>
           <span class="cat-desc">Forêt, mer, vent</span>
         </div>
-        <div class="cat-card cinema locked" onclick="handleCatClick('epic cinematic orchestra')">
+        <div class="cat-card" id="cat-cinema" onclick="handleCatClick('epic cinematic orchestra', this)">
           <span class="cat-icon">🎬</span>
           <span class="cat-name">Cinéma épique</span>
           <span class="cat-desc">Orchestral, drama</span>
         </div>
-        <div class="cat-card horror locked" onclick="handleCatClick('horror tension dark scary')">
+        <div class="cat-card" id="cat-horror" onclick="handleCatClick('horror tension dark scary', this)">
           <span class="cat-icon">👻</span>
           <span class="cat-name">Horreur</span>
           <span class="cat-desc">Tension, suspense</span>
         </div>
-        <div class="cat-card urbain locked" onclick="handleCatClick('urban city street noise')">
+        <div class="cat-card" id="cat-urbain" onclick="handleCatClick('urban city street noise', this)">
           <span class="cat-icon">🏙️</span>
           <span class="cat-name">Urbain</span>
           <span class="cat-desc">Ville, rue, foule</span>
         </div>
-        <div class="cat-card scifi locked" onclick="handleCatClick('sci-fi space futuristic')">
+        <div class="cat-card" id="cat-scifi" onclick="handleCatClick('sci-fi space futuristic', this)">
           <span class="cat-icon">🚀</span>
           <span class="cat-name">Sci-Fi</span>
           <span class="cat-desc">Espace, futur</span>
         </div>
-        <div class="cat-card action locked" onclick="handleCatClick('action explosion impact')">
+        <div class="cat-card" id="cat-action" onclick="handleCatClick('action explosion impact', this)">
           <span class="cat-icon">💥</span>
           <span class="cat-name">Action</span>
           <span class="cat-desc">Explosions, combat</span>
         </div>
-        <div class="cat-card comedie locked" onclick="handleCatClick('comedy fun cartoon silly')">
+        <div class="cat-card" id="cat-comedie" onclick="handleCatClick('comedy fun cartoon silly', this)">
           <span class="cat-icon">😂</span>
           <span class="cat-name">Comédie</span>
           <span class="cat-desc">Fun, cartoon, memes</span>
         </div>
-        <div class="cat-card sfx locked" onclick="handleSFX()">
+        <div class="cat-card" id="cat-sfx" onclick="handleSFX()">
           <span class="cat-icon">🎚️</span>
           <span class="cat-name">SFX</span>
           <span class="cat-desc">Transitions, impacts</span>
@@ -293,16 +359,16 @@
       </div>
 
       <div class="sfx-panel" id="sfxPanel">
-        <p class="sfx-title">🎚️ Choisis ton type de SFX :</p>
+        <p class="cat-section-title">Type de SFX</p>
         <div class="sfx-types">
-          <button class="sfx-type-btn" onclick="loadSFX('transition', this)">💨 Transitions / Whoosh</button>
+          <button class="sfx-type-btn" onclick="loadSFX('transition', this)">💨 Transitions</button>
           <button class="sfx-type-btn" onclick="loadSFX('impact', this)">💥 Impacts</button>
           <button class="sfx-type-btn" onclick="loadSFX('explosion', this)">🔥 Explosions</button>
-          <button class="sfx-type-btn" onclick="loadSFX('ui', this)">🖱️ UI / Interface</button>
+          <button class="sfx-type-btn" onclick="loadSFX('ui', this)">🖱️ UI</button>
           <button class="sfx-type-btn" onclick="loadSFX('nature', this)">🌿 Nature</button>
           <button class="sfx-type-btn" onclick="loadSFX('scary', this)">👻 Horreur</button>
-          <button class="sfx-type-btn" onclick="loadSFX('funny', this)">😂 Cartoon / Funny</button>
-          <button class="sfx-type-btn" onclick="loadSFX('cinematic', this)">🎬 Cinématique</button>
+          <button class="sfx-type-btn" onclick="loadSFX('funny', this)">😂 Funny</button>
+          <button class="sfx-type-btn" onclick="loadSFX('cinematic', this)">🎬 Cinéma</button>
         </div>
         <div class="grid" id="sfxGrid"></div>
       </div>
@@ -348,88 +414,128 @@
   <!-- PAGE TARIFS -->
   <div class="page" id="page-pricing">
     <div class="pricing-page">
-      <h1>Tarifs simples</h1>
-      <p>Un seul paiement, un accès à vie.</p>
+      <h1>Simple et transparent</h1>
+      <p>Un seul paiement, un accès à vie. Pas d'abonnement, pas de surprise.</p>
       <div class="pricing-cards">
         <div class="pricing-card">
-          <div class="price">0€</div>
-          <div class="price-sub">Gratuit pour toujours</div>
+          <div class="pricing-price">0€</div>
+          <div class="pricing-sub">Gratuit pour toujours</div>
           <ul>
-            <li>1 recherche gratuite</li>
+            <li>1 recherche / 24h</li>
+            <li>1 pack prédéfini / 24h</li>
             <li>3 résultats par catégorie</li>
-            <li class="disabled">Packs prédéfinis</li>
-            <li class="disabled">SFX de transition</li>
-            <li class="disabled">50 résultats</li>
+            <li class="no">Recherches illimitées</li>
+            <li class="no">50 résultats</li>
+            <li class="no">SFX de transition</li>
           </ul>
           <button class="free-btn" onclick="showPage('search')">Commencer gratuitement</button>
         </div>
         <div class="pricing-card featured">
-          <div class="badge">⭐ Le plus populaire</div>
-          <div class="price">20€</div>
-          <div class="price-sub">Paiement unique — Accès à vie</div>
+          <div class="pricing-badge">⭐ ACCÈS À VIE</div>
+          <div class="pricing-price">20€</div>
+          <div class="pricing-sub">Une fois, pour toujours</div>
           <ul>
             <li>Recherches illimitées</li>
-            <li>50 résultats par catégorie</li>
-            <li>Accès aux packs prédéfinis</li>
-            <li>SFX de transition</li>
+            <li>Tous les packs prédéfinis</li>
+            <li>50 résultats par recherche</li>
+            <li>Accès complet aux SFX</li>
             <li>Futures fonctionnalités incluses</li>
           </ul>
-          <button class="buy-btn" onclick="showPopup()">Obtenir l'accès Premium</button>
+          <button class="buy-btn" onclick="showPopup()">Obtenir l'accès Premium →</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- POPUP PREMIUM -->
+  <!-- POPUP -->
   <div class="overlay" id="overlay">
     <div class="popup">
-      <div style="font-size:40px;margin-bottom:16px">✦</div>
-      <h2>Passe à Findly Premium</h2>
+      <div class="popup-icon">◈</div>
+      <h2>Sonrix Premium</h2>
+      <p class="popup-desc">Un seul paiement, accès illimité à vie.</p>
       <div class="popup-price">20€</div>
       <div class="popup-price-sub">Paiement unique — Accès à vie</div>
       <ul class="popup-features">
         <li>Recherches illimitées</li>
-        <li>50 résultats par catégorie</li>
-        <li>Accès à tous les packs prédéfinis</li>
-        <li>Accès aux SFX de transition</li>
-        <li>Accès aux futures fonctionnalités</li>
+        <li>50 résultats par recherche</li>
+        <li>Tous les packs prédéfinis</li>
+        <li>Accès complet aux SFX</li>
+        <li>Futures fonctionnalités</li>
       </ul>
-      <input type="email" class="email-input" id="buyerEmail" placeholder="Ton email pour recevoir ton code d'accès *" />
-      <p class="email-sent" id="emailSent">✓ Email enregistré ! Tu recevras ton code après paiement.</p>
-      <button class="paypal-btn" onclick="paypal()">💳 Payer 20€ avec PayPal</button>
-      <button class="popup-close" onclick="hidePopup()">Non merci, rester en gratuit</button>
+      <input type="email" class="email-input" id="buyerEmail" placeholder="Ton email pour recevoir le code d'accès *" />
+      <p class="email-sent" id="emailSent">✓ Email enregistré — tu recevras ton code après paiement.</p>
+      <button class="paypal-btn" onclick="paypal()">💳 Payer 20€ via PayPal</button>
+      <button class="popup-close" onclick="hidePopup()">Fermer</button>
       <div class="code-section">
-        <p>Tu as déjà un code d'accès ?</p>
+        <p class="code-label">TU AS DÉJÀ UN CODE ?</p>
         <div class="code-input-wrapper">
-          <input type="text" id="codeInput" placeholder="FINDLY-XXXX" />
+          <input type="text" id="codeInput" placeholder="SONRIX-XXXX" />
           <button onclick="verifyCode()">Activer</button>
         </div>
-        <p class="code-error" id="codeError">Code invalide, vérifie et réessaie.</p>
-        <p class="code-success" id="codeSuccess">✓ Code activé ! Bienvenue en Premium 🎉</p>
+        <p class="code-error" id="codeError">Code invalide.</p>
+        <p class="code-success" id="codeSuccess">✓ Activé ! Bienvenue en Premium 🎉</p>
       </div>
     </div>
   </div>
 
   <footer>
-    <p>✦ Findly — Ressources libres de droits pour créateurs · 2026 · <a href="mailto:findlyfaq@gmail.com" style="color:#6c63ff;text-decoration:none;">Contact</a></p>
+    <p>◈ Sonrix — Ressources libres de droits pour créateurs · 2026 · <a href="mailto:findlyfaq@gmail.com">Contact</a></p>
   </footer>
 
   <script>
-    // Init EmailJS
     emailjs.init('zEPpnW4pkNhktz2YJ');
 
     var isPremium = false;
-    var hasSearched = false;
+    var searchUsed = false;
+    var catUsed = false;
+    var timeLeft = 0;
+    var timerInterval = null;
 
     function init() {
       fetch('/status')
         .then(function(r) { return r.json(); })
         .then(function(data) {
           isPremium = data.isPremium;
-          hasSearched = data.hasSearched;
+          searchUsed = data.searchUsed;
+          catUsed = data.catUsed;
+          timeLeft = data.timeLeft;
           if (isPremium) unlockPremium();
+          updateQuotaBar();
+          if (!isPremium && (searchUsed || catUsed)) startTimer();
         });
       loadPreview();
+    }
+
+    function updateQuotaBar() {
+      var bar = document.getElementById('quotaBar');
+      if (isPremium) {
+        bar.innerHTML = '<div class="quota-item"><div class="quota-dot gold"></div><span>Premium — Accès illimité</span></div>';
+        return;
+      }
+      bar.innerHTML =
+        '<div class="quota-item"><div class="quota-dot ' + (searchUsed ? 'red' : 'green') + '"></div><span>Recherche : ' + (searchUsed ? 'utilisée' : 'disponible') + '</span></div>' +
+        '<div class="quota-item"><div class="quota-dot ' + (catUsed ? 'red' : 'green') + '"></div><span>Pack : ' + (catUsed ? 'utilisé' : 'disponible') + '</span></div>';
+    }
+
+    function startTimer() {
+      var badge = document.getElementById('timerBadge');
+      badge.style.display = 'inline-flex';
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(function() {
+        timeLeft -= 1000;
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          badge.style.display = 'none';
+          searchUsed = false;
+          catUsed = false;
+          updateQuotaBar();
+          return;
+        }
+        var h = Math.floor(timeLeft / 3600000);
+        var m = Math.floor((timeLeft % 3600000) / 60000);
+        var s = Math.floor((timeLeft % 60000) / 1000);
+        document.getElementById('timerText').textContent = h + 'h ' + m + 'm ' + s + 's';
+      }, 1000);
     }
 
     function showPage(page) {
@@ -442,64 +548,46 @@
       fetch('/preview')
         .then(function(r) { return r.json(); })
         .then(function(data) {
-          var soundsEl = document.getElementById('previewSounds');
-          var videosEl = document.getElementById('previewVideos');
-          var gifsEl = document.getElementById('previewGifs');
-
-          if (data.sounds) {
-            data.sounds.forEach(function(s) {
-              soundsEl.innerHTML += '<div class="preview-card"><audio controls src="' + s.previews['preview-hq-mp3'] + '"></audio><p>' + s.name + '</p></div>';
-            });
-          }
-          if (data.videos) {
-            data.videos.forEach(function(v) {
-              var thumb = v.image || '';
-              if (thumb) videosEl.innerHTML += '<div class="preview-card"><img src="' + thumb + '" style="width:100%;border-radius:8px;max-height:100px;object-fit:cover"/><p>' + v.url.split('/').slice(-2,-1)[0] + '</p></div>';
-            });
-          }
-          if (data.gifs) {
-            data.gifs.forEach(function(g) {
-              gifsEl.innerHTML += '<div class="preview-card"><img src="' + g.images.fixed_height.url + '" /><p>' + g.title + '</p></div>';
-            });
-          }
+          var s = document.getElementById('previewSounds');
+          var v = document.getElementById('previewVideos');
+          var g = document.getElementById('previewGifs');
+          if (data.sounds) data.sounds.forEach(function(x) {
+            s.innerHTML += '<div class="preview-card"><audio controls src="' + x.previews['preview-hq-mp3'] + '"></audio><p>' + x.name + '</p></div>';
+          });
+          if (data.videos) data.videos.forEach(function(x) {
+            if (x.image) v.innerHTML += '<div class="preview-card"><img src="' + x.image + '" /><p>' + x.url.split('/').slice(-2,-1)[0] + '</p></div>';
+          });
+          if (data.gifs) data.gifs.forEach(function(x) {
+            g.innerHTML += '<div class="preview-card"><img src="' + x.images.fixed_height.url + '" /><p>' + x.title + '</p></div>';
+          });
         });
     }
 
     function unlockPremium() {
       isPremium = true;
-      document.querySelectorAll('.cat-card').forEach(function(c) { c.classList.remove('locked'); });
       document.getElementById('navBtn').textContent = '✦ Premium';
       document.getElementById('navBtn').classList.add('premium');
-      var catTitle = document.getElementById('catTitle');
-      if (catTitle) catTitle.innerHTML = 'Ou explore par catégorie';
+      document.querySelectorAll('.cat-card').forEach(function(c) { c.classList.remove('used'); });
+      updateQuotaBar();
     }
 
-    function showPopup() {
-      document.getElementById('overlay').classList.add('show');
-    }
-
-    function hidePopup() {
-      document.getElementById('overlay').classList.remove('show');
-    }
+    function showPopup() { document.getElementById('overlay').classList.add('show'); }
+    function hidePopup() { document.getElementById('overlay').classList.remove('show'); }
 
     function paypal() {
       var email = document.getElementById('buyerEmail').value.trim();
       if (!email || !email.includes('@')) {
-        document.getElementById('buyerEmail').style.borderColor = '#ff6584';
+        document.getElementById('buyerEmail').style.borderColor = '#e57373';
         document.getElementById('buyerEmail').placeholder = 'Entre ton email svp !';
         return;
       }
       document.getElementById('buyerEmail').style.borderColor = '';
-
       emailjs.send('service_2ks5lge', 'template_qdk1j9c', {
         buyer_email: email,
-        message: 'Nouvel acheteur Findly : ' + email
+        message: 'Nouvel acheteur Sonrix : ' + email
       }).then(function() {
         document.getElementById('emailSent').style.display = 'block';
-      }).catch(function(err) {
-        console.log('Erreur email:', err);
       });
-
       window.open('https://paypal.me/TONPSEUDO/20', '_blank');
     }
 
@@ -523,22 +611,46 @@
       });
     }
 
-    function handleCatClick(query) {
-      if (!isPremium) { showPopup(); return; }
-      search(query);
+    function handleCatClick(query, el) {
+      if (!isPremium && catUsed) {
+        showUpsell('pack');
+        return;
+      }
+      if (!isPremium) {
+        catUsed = true;
+        el.classList.add('used');
+        updateQuotaBar();
+        startTimer();
+      }
+      fetchCategory(query);
+    }
+
+    function fetchCategory(query) {
+      document.getElementById('sfxPanel').classList.remove('show');
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('results').style.display = 'none';
+      document.getElementById('filters').classList.remove('show');
+      document.getElementById('searchInput').value = query;
+
+      fetch('/category?q=' + encodeURIComponent(query) + '&premium=' + isPremium)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.blocked) { showUpsell('pack'); return; }
+          displayResults(data);
+        });
     }
 
     function handleSFX() {
       if (!isPremium) { showPopup(); return; }
       document.getElementById('sfxPanel').classList.toggle('show');
       document.getElementById('results').style.display = 'none';
-      document.getElementById('filters').style.display = 'none';
+      document.getElementById('filters').classList.remove('show');
     }
 
     function loadSFX(type, btn) {
       document.querySelectorAll('.sfx-type-btn').forEach(function(b) { b.classList.remove('active'); });
       btn.classList.add('active');
-      document.getElementById('sfxGrid').innerHTML = '<div style="color:#444;padding:20px">Chargement...</div>';
+      document.getElementById('sfxGrid').innerHTML = '<div style="color:var(--text3);padding:20px;font-size:13px">Chargement...</div>';
       fetch('/sfx?type=' + type)
         .then(function(r) { return r.json(); })
         .then(function(data) {
@@ -546,7 +658,7 @@
           grid.innerHTML = '';
           if (data.sounds && data.sounds.length > 0) {
             data.sounds.forEach(function(s) {
-              grid.innerHTML += '<div class="card"><h3>' + s.name + '</h3><audio controls src="' + s.previews['preview-hq-mp3'] + '"></audio><div class="card-footer"><a href="https://freesound.org/s/' + s.id + '" target="_blank">Voir sur Freesound →</a></div></div>';
+              grid.innerHTML += '<div class="card"><h3>' + s.name + '</h3><audio controls src="' + s.previews['preview-hq-mp3'] + '"></audio><div class="card-footer"><a href="https://freesound.org/s/' + s.id + '" target="_blank">Freesound →</a></div></div>';
             });
           } else {
             grid.innerHTML = '<p class="empty">Aucun SFX trouvé</p>';
@@ -554,87 +666,114 @@
         });
     }
 
+    function showUpsell(type) {
+      var msg = type === 'search' ? 'Tu as utilisé ta recherche gratuite du jour.' : 'Tu as utilisé ton pack gratuit du jour.';
+      var existing = document.getElementById('upsellBanner');
+      if (existing) existing.remove();
+      var banner = document.createElement('div');
+      banner.id = 'upsellBanner';
+      banner.className = 'upsell-banner';
+      banner.innerHTML = '<h3>Quota journalier atteint</h3><p>' + msg + ' Reviens demain ou passe Premium pour un accès illimité.</p><button onclick="showPopup()">🚀 Passer Premium — 20€ à vie</button>';
+      document.getElementById('results').style.display = 'none';
+      document.getElementById('filters').classList.remove('show');
+      document.getElementById('loading').style.display = 'none';
+      var searchPage = document.querySelector('.search-page');
+      var existing2 = document.getElementById('upsellBanner');
+      if (existing2) existing2.remove();
+      searchPage.appendChild(banner);
+    }
+
     function playVideo(wrapper, src) {
       var video = document.createElement('video');
       video.controls = true;
       video.autoplay = true;
       video.src = src;
-      video.style.cssText = 'width:100%;border-radius:10px;max-height:180px;object-fit:cover';
+      video.style.cssText = 'width:100%;border-radius:8px;max-height:180px;object-fit:cover';
       wrapper.parentNode.replaceChild(video, wrapper);
     }
 
-    function search(preset) {
-      var query = preset || document.getElementById('searchInput').value;
+    function search() {
+      var query = document.getElementById('searchInput').value;
       if (!query) return;
 
-      if (!isPremium && hasSearched) {
-        showPopup();
+      if (!isPremium && searchUsed) {
+        showUpsell('search');
         return;
       }
 
-      hasSearched = true;
-      document.getElementById('searchInput').value = query;
+      if (!isPremium) {
+        searchUsed = true;
+        updateQuotaBar();
+        startTimer();
+      }
+
       document.getElementById('sfxPanel').classList.remove('show');
       document.getElementById('loading').style.display = 'block';
       document.getElementById('results').style.display = 'none';
-      document.getElementById('filters').style.display = 'none';
+      document.getElementById('filters').classList.remove('show');
 
       fetch('/search?q=' + encodeURIComponent(query) + '&premium=' + isPremium)
         .then(function(r) { return r.json(); })
         .then(function(data) {
-          if (data.blocked) { showPopup(); return; }
-
-          document.getElementById('loading').style.display = 'none';
-          document.getElementById('results').style.display = 'block';
-          document.getElementById('filters').style.display = 'flex';
-
-          var soundsGrid = document.getElementById('soundsGrid');
-          soundsGrid.innerHTML = '';
-          if (data.sounds && data.sounds.length > 0) {
-            document.getElementById('soundsCount').textContent = data.sounds.length + ' résultats';
-            data.sounds.forEach(function(s) {
-              soundsGrid.innerHTML += '<div class="card"><h3>' + s.name + '</h3><audio controls src="' + s.previews['preview-hq-mp3'] + '"></audio><div class="card-footer"><a href="https://freesound.org/s/' + s.id + '" target="_blank">Voir sur Freesound →</a></div></div>';
-            });
-          } else {
-            soundsGrid.innerHTML = '<p class="empty">Aucun son trouvé</p>';
-          }
-
-          var videosGrid = document.getElementById('videosGrid');
-          videosGrid.innerHTML = '';
-          if (data.videos && data.videos.length > 0) {
-            document.getElementById('videosCount').textContent = data.videos.length + ' résultats';
-            data.videos.forEach(function(v) {
-              var file = v.video_files && v.video_files[0];
-              if (!file) return;
-              var thumb = v.image || '';
-              var cardHtml = '<div class="card"><h3>' + v.url.split('/').slice(-2, -1)[0] + '</h3>';
-              if (thumb) {
-                cardHtml += '<div class="video-wrapper" onclick="playVideo(this, \'' + file.link + '\')"><img src="' + thumb + '" /></div>';
-              } else {
-                cardHtml += '<video controls src="' + file.link + '" style="width:100%;border-radius:10px;max-height:180px"></video>';
-              }
-              cardHtml += '<div class="card-footer"><a href="' + v.url + '" target="_blank">Voir sur Pexels →</a></div></div>';
-              videosGrid.innerHTML += cardHtml;
-            });
-          } else {
-            videosGrid.innerHTML = '<p class="empty">Aucune vidéo trouvée</p>';
-          }
-
-          var gifsGrid = document.getElementById('gifsGrid');
-          gifsGrid.innerHTML = '';
-          if (data.gifs && data.gifs.length > 0) {
-            document.getElementById('gifsCount').textContent = data.gifs.length + ' résultats';
-            data.gifs.forEach(function(g) {
-              gifsGrid.innerHTML += '<div class="card"><h3>' + g.title + '</h3><img src="' + g.images.fixed_height.url + '" /><div class="card-footer"><a href="' + g.url + '" target="_blank">Voir sur Giphy →</a></div></div>';
-            });
-          } else {
-            gifsGrid.innerHTML = '<p class="empty">Aucun GIF trouvé</p>';
-          }
-
-          if (!isPremium) {
-            document.getElementById('results').insertAdjacentHTML('beforeend', '<div style="text-align:center;padding:40px;border-top:1px solid rgba(255,255,255,0.05);margin-top:20px"><p style="color:#666;margin-bottom:16px">Tu as utilisé ta recherche gratuite</p><button onclick="showPopup()" style="padding:14px 30px;border-radius:12px;border:none;background:linear-gradient(135deg,#6c63ff,#ff6584);color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">🚀 Débloquer l\'accès illimité — 20€</button></div>');
-          }
+          if (data.blocked) { showUpsell('search'); return; }
+          displayResults(data);
         });
+    }
+
+    function displayResults(data) {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('results').style.display = 'block';
+      document.getElementById('filters').classList.add('show');
+      var existing = document.getElementById('upsellBanner');
+      if (existing) existing.remove();
+
+      var soundsGrid = document.getElementById('soundsGrid');
+      soundsGrid.innerHTML = '';
+      if (data.sounds && data.sounds.length > 0) {
+        document.getElementById('soundsCount').textContent = data.sounds.length + ' résultats';
+        data.sounds.forEach(function(s) {
+          soundsGrid.innerHTML += '<div class="card"><h3>' + s.name + '</h3><audio controls src="' + s.previews['preview-hq-mp3'] + '"></audio><div class="card-footer"><a href="https://freesound.org/s/' + s.id + '" target="_blank">Freesound →</a></div></div>';
+        });
+      } else {
+        soundsGrid.innerHTML = '<p class="empty">Aucun son trouvé</p>';
+      }
+
+      var videosGrid = document.getElementById('videosGrid');
+      videosGrid.innerHTML = '';
+      if (data.videos && data.videos.length > 0) {
+        document.getElementById('videosCount').textContent = data.videos.length + ' résultats';
+        data.videos.forEach(function(v) {
+          var file = v.video_files && v.video_files[0];
+          if (!file) return;
+          var cardHtml = '<div class="card"><h3>' + v.url.split('/').slice(-2,-1)[0] + '</h3>';
+          if (v.image) {
+            cardHtml += '<div class="video-wrapper" onclick="playVideo(this, \'' + file.link + '\')"><img src="' + v.image + '" /></div>';
+          } else {
+            cardHtml += '<video controls src="' + file.link + '" style="width:100%;border-radius:8px;max-height:180px"></video>';
+          }
+          cardHtml += '<div class="card-footer"><a href="' + v.url + '" target="_blank">Pexels →</a></div></div>';
+          videosGrid.innerHTML += cardHtml;
+        });
+      } else {
+        videosGrid.innerHTML = '<p class="empty">Aucune vidéo trouvée</p>';
+      }
+
+      var gifsGrid = document.getElementById('gifsGrid');
+      gifsGrid.innerHTML = '';
+      if (data.gifs && data.gifs.length > 0) {
+        document.getElementById('gifsCount').textContent = data.gifs.length + ' résultats';
+        data.gifs.forEach(function(g) {
+          gifsGrid.innerHTML += '<div class="card"><h3>' + g.title + '</h3><img src="' + g.images.fixed_height.url + '" /><div class="card-footer"><a href="' + g.url + '" target="_blank">Giphy →</a></div></div>';
+        });
+      } else {
+        gifsGrid.innerHTML = '<p class="empty">Aucun GIF trouvé</p>';
+      }
+
+      if (!isPremium) {
+        document.getElementById('results').insertAdjacentHTML('beforeend',
+          '<div class="upsell-banner"><h3>Tu vois 3 résultats sur 50+</h3><p>Passe Premium pour accéder aux 50 meilleures ressources par recherche.</p><button onclick="showPopup()">🚀 Débloquer — 20€ à vie</button></div>'
+        );
+      }
     }
 
     function filterSection(type) {
